@@ -1,0 +1,56 @@
+Design and develop a "general purpose" Memory Management System that:
+
+- defines its C/C++ allocation/deallocation functions (ex: MM_NEW, MM_NEW_A, MM_DELETE, MM_DELETE_A, MM_MALLOC, MM_FREE)
+- does not override default c++ memory management functions but provide a header file that with a conditional compilation technique will 
+enable global new, new[], delete, delete[], rebind to your MM functions (ex: #ifdef USE_MM_POWAAAA  ... void* operator new(size_t size){return MM_NEW(...);} ... #endif)
+- use at least two different underlying allocators (one can be a SSA, another one a more general allocator)
+- handles memory quotas of allocation categories
+- expose a std::allocator compatible STL allocator (ex: MM_STL_ALLOCATOR)
+- expose a smart pointer (shared_ptr + make_unique) that uses the MM
+- it's thread safe on demand (statically, by policy)
+- can handle aligned memory request (ex MM_ALIGNED_NEW and so on...)
+- can be inited by config file or header file, defining allocation categories, memory quotas and other data your MM needs.
+
+...
+- any other additional features you want to put in it is a plus :)
+- any one feature I've put in the homework is "negotiable" (if you can't do all of this, don't warry!)
+- you can use and include any "free-to-use" allocator you can find on the internet: I'm not interested in building the single "bricks", but the full system.
+
+
+good job, remember this is a 2xHomework!
+IMPORTANT: you can do this homework in teams of 2 programmers.
+
+
+
+and now... giga link pack:
+
+best:
+http://entland.homelinux.com/blog/2008/08/19/practical-efficient-memory-management/
+http://jfdube.wordpress.com/2012/01/13/memory-management-part-4-allocators-overhead-waste-and-fragmentation/
+http://jfdube.wordpress.com/2011/10/22/memory-management-part-3-memory-allocators-design/
+http://jfdube.wordpress.com/2011/10/06/memory-management-part-2-allocations-tracking/
+http://jfdube.wordpress.com/2011/10/03/memory-management-part-1-introduction/
+http://www.cprogramming.com/tutorial/dynamic_memory_allocation.html
+
+minor:
+http://altdevblogaday.com/2011/02/12/alternatives-to-malloc-and-new/
+http://groups.google.com/group/microsoft.public.vc.language/browse_thread/thread/f63b4ed722e1b134/4b9d041e4c31c977?lnk=gst&pli=1
+http://www.parashift.com/c++-faq-lite/freestore-mgmt.html
+http://www.codeguru.com/cpp/cpp/cpp_mfc/stl/article.php/c4079
+https://lwn.net/Articles/250967/?repost=1
+http://goog-perftools.sourceforge.net/doc/tcmalloc.html
+http://www.gotw.ca/publications/mill15.htm
+http://www.codeguru.com/cpp/cpp/cpp_mfc/stl/article.php/c4079
+http://ootips.org/yonat/4dev/smart-pointers.html
+http://www.glenmccl.com/tip_025.htm
+http://blogs.msdn.com/b/ericlippert/archive/2009/06/08/out-of-memory-does-not-refer-to-physical-memory.aspx
+http://eli.thegreenplace.net/2011/02/17/the-many-faces-of-operator-new-in-c/
+http://www.ibm.com/developerworks/linux/library/l-memory/
+http://stackoverflow.com/questions/1809705/global-placement-delete
+http://g.oswego.edu/dl/html/malloc.html
+http://stackoverflow.com/questions/364483/determining-the-alignment-of-c-c-structures-in-relation-to-its-members
+http://www.codeproject.com/Articles/4795/C-Standard-Allocator-An-Introduction-and-Implement
+http://www.scs.stanford.edu/~dm/home/papers/c++-new.html
+
+and lol:
+http://stackoverflow.com/questions/661862/c-memory-management-for-texture-streaming-in-videogames
