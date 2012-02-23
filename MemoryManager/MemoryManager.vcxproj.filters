@@ -18,9 +18,6 @@
     <None Include="..\hw4-Memory-Manager.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SmartPointer.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryManager.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
@@ -31,6 +28,18 @@
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="OwnedPtr.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="RefCountedPtr.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="RefLinkedPtr.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="SmartPointers.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>

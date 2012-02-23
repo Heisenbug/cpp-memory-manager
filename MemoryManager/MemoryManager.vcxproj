@@ -65,9 +65,12 @@
   <ItemGroup>
     <ClInclude Include="FixedSizeAllocator.h" />
     <ClInclude Include="MemoryManager.h" />
+    <ClInclude Include="OwnedPtr.h" />
+    <ClInclude Include="RefCountedPtr.h" />
+    <ClInclude Include="RefLinkedPtr.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SmallObjectAllocator.h" />
-    <ClInclude Include="SmartPointer.h" />
+    <ClInclude Include="SmartPointers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FixedSizeAllocator.cpp" />
