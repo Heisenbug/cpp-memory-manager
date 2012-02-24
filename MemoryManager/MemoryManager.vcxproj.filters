@@ -51,6 +51,18 @@
     <ClInclude Include="CreateOnAccessPtr.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="SingletonHolder.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallObjectAlloc.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="BigObjectAlloc.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="AllocationTable.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SmallObjectAllocator.cpp">

@@ -63,6 +63,8 @@
     <None Include="..\hw4-Memory-Manager.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AllocationTable.h" />
+    <ClInclude Include="BigObjectAlloc.h" />
     <ClInclude Include="CopyOnWritePtr.h" />
     <ClInclude Include="CreateOnAccessPtr.h" />
     <ClInclude Include="DeepCopyPtr.h" />
@@ -72,6 +74,8 @@
     <ClInclude Include="RefCountedPtr.h" />
     <ClInclude Include="RefLinkedPtr.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SingletonHolder.h" />
+    <ClInclude Include="SmallObjectAlloc.h" />
     <ClInclude Include="SmallObjectAllocator.h" />
     <ClInclude Include="SmartPointers.h" />
   </ItemGroup>
