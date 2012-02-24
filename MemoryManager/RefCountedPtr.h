@@ -103,8 +103,8 @@ namespace MM
 			RCPImpl(pointer p = 0, unsigned int c = 1) 
 				: mPointee(p), mCounter(c) { }
 
-			pointer		mPointee;
-			unsigned    mCounter;
+			pointee_type	mPointee;
+			unsigned		mCounter;
 		}* mRCPImpl;
 	};
 }

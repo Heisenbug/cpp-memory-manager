@@ -116,7 +116,7 @@ namespace MM
 			mPointee = 0;
 		}
 
-		pointer						mPointee;
+		pointee_type				mPointee;
 		mutable const RefLinkedPtr* mPrev;
 		mutable const RefLinkedPtr* mNext;
 	};

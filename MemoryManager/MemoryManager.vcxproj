@@ -63,6 +63,9 @@
     <None Include="..\hw4-Memory-Manager.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CopyOnWritePtr.h" />
+    <ClInclude Include="CreateOnAccessPtr.h" />
+    <ClInclude Include="DeepCopyPtr.h" />
     <ClInclude Include="FixedSizeAllocator.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="OwnedPtr.h" />

@@ -42,6 +42,15 @@
     <ClInclude Include="SmartPointers.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="DeepCopyPtr.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyOnWritePtr.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateOnAccessPtr.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SmallObjectAllocator.cpp">
