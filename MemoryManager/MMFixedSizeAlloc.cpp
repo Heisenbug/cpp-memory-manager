@@ -177,8 +177,21 @@ namespace MM
 			{
 				if (i == mChunks.end())
 				{
+					bool hasChangedAddress = false;
 					// All filled up - add a new chunk
+					if (mChunks.capacity() == mChunks.size()){
+						hasChangedAddress = true;
+						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it ){
+							AllocationTable::InvalidateChunk(&*it, DEFAULT_CHUNK_SIZE, this->owner);
+						}
+					}
 					mChunks.reserve(mChunks.size() + 1);
+
+					if (hasChangedAddress == true){
+						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it ){
+							AllocationTable::RegisterChunk(&*it, DEFAULT_CHUNK_SIZE, this->owner);
+						}
+					}
 					Chunk newChunk;
 					newChunk.Init(mBlockSize, mNumBlocks);
 					mChunks.push_back(newChunk);
