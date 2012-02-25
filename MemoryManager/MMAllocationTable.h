@@ -92,7 +92,11 @@ namespace MM
 			//put allocator interface inside AllocatorDescriptor
 			SingletonHolder<AllocTable>::Instance().insert( std::make_pair(ChunkIndex(c, size), a) );
 		}
-
+		static void InvalidateChunk(ChunkInterface* c, size_t size, AllocatorInterface* a)
+		{
+		
+			SingletonHolder<AllocTable>::Instance().erase( ChunkIndex(c, size));
+		}
 		static AllocatorInterface* FindAllocatorFor(void* p)
 		{
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
