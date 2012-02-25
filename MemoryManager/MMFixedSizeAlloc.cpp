@@ -1,5 +1,7 @@
 #include "MMFixedSizeAlloc.h"
 
+#include "MMAllocationTable.h"
+
 #include <utility>
 #include <cassert>
 
@@ -184,7 +186,7 @@ namespace MM
 					mDeallocChunk	= &mChunks.front();
 
 					//NEW CHUNK..should be registered
-					AllocationTable::RegisterChunk(&newChunk, DEFAULT_CHUNK_SIZE, this->owner );
+					AllocationTable::RegisterChunk(&newChunk, DEFAULT_CHUNK_SIZE, this->owner);
 					break;
 				}
 

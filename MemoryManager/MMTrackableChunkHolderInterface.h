@@ -1,7 +1,8 @@
 #ifndef MMTRACKABLECHUNKHOLDERINTERFACE_H_INCLUDE_GUARD
 #define MMTRACKABLECHUNKHOLDERINTERFACE_H_INCLUDE_GUARD
 
-class AllocatorInterface;
+#include "MMAllocatorInterface.h"
+
 namespace MM
 {
 	class TrackableChunkHolderInterface
@@ -12,7 +13,6 @@ namespace MM
 		//owner is a cross-layer reference to the AllocatorInterface.
 		//every concrete class implementing this interface MUST use the owner reference while registering allocated MMChunkInterface's to the MMAllocationTable 
 		virtual void setOwner(AllocatorInterface * owner) = 0;
-		
 	};
 }
 

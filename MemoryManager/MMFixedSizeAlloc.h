@@ -10,10 +10,10 @@
 #endif
 
 #include "MMTrackableChunkHolderInterface.h"
-#include "MMAllocationTable.h"
+#include "MMAllocatorInterface.h"
 
 //#include "MMAllocatorInterface.h"
-class AllocatorInterface; //forward declaration only for cross-layer reference to owner. avoid circular dependencies.
+//class AllocatorInterface; //forward declaration only for cross-layer reference to owner. avoid circular dependencies.
 namespace MM
 {
 	class FixedSizeAlloc : public TrackableChunkHolderInterface
@@ -62,6 +62,7 @@ namespace MM
 		#pragma endregion
 
 		void setOwner(AllocatorInterface * o);
+
 	private:
 
 		#pragma region Typedefs

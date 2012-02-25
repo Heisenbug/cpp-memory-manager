@@ -34,6 +34,9 @@ namespace MM
 
 		static T* mInstance;
 	};
+
+	template<typename T, typename LockPolicy>
+	T* SingletonHolder<T, LockPolicy>::mInstance = 0;
 }
 
 #endif // MMSINGLETONHOLDER_H_INCLUDE_GUARD

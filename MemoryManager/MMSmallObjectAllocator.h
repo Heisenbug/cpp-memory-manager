@@ -23,12 +23,12 @@ namespace MM
 	class SmallObjectAllocator : public AllocatorInterface
 	{
 	public:
-		static void* operator new(size_t size)
+		static void* AllocateBytes(size_t size)
 		{
 			return SingletonHolder<SmallObjectAllocatorType>::Instance().Allocate(size);
 		}
 
-		static void operator delete(void * p)
+		static void DeallocateBytes(void * p)
 		{
 			return SingletonHolder<SmallObjectAllocatorType>::Instance().Deallocate(p);
 		}
