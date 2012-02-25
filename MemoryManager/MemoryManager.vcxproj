@@ -60,6 +60,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MMAllocationTable.h" />
     <ClInclude Include="MMAllocatorInterface.h" />
     <ClInclude Include="MMChunkInterface.h" />

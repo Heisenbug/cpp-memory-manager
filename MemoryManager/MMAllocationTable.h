@@ -21,7 +21,12 @@ namespace MM
 
 	bool operator==(const ChunkIndex& i1, const ChunkIndex& i2)
 	{
-		return i1.mIndex.
+		return (i1 == i2);
+	}
+
+	bool operator<(const ChunkIndex& i1, const ChunkIndex& i2)
+	{
+
 	}
 
 	typedef std::map<ChunkIndex, AllocatorInterface*> AllocTable; 
