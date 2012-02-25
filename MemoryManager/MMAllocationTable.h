@@ -89,7 +89,8 @@ namespace MM
 
 		static void RegisterChunk(ChunkInterface* c, size_t size, AllocatorInterface* a)
 		{
-			SingletonHolder<AllocTable>::Instance().insert( ChunkIndex(c, size) );
+			//put allocator interface inside AllocatorDescriptor
+			SingletonHolder<AllocTable>::Instance().insert( std::make_pair(ChunkIndex(c, size), a) );
 		}
 
 		static AllocatorInterface* FindAllocatorFor(void* p)

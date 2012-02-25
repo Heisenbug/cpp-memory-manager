@@ -9,9 +9,14 @@
 #define DEFAULT_CHUNK_SIZE 4096
 #endif
 
+#include "MMTrackableChunkHolderInterface.h"
+#include "MMAllocationTable.h"
+
+//#include "MMAllocatorInterface.h"
+class AllocatorInterface; //forward declaration only for cross-layer reference to owner. avoid circular dependencies.
 namespace MM
 {
-	class FixedSizeAlloc
+	class FixedSizeAlloc : public TrackableChunkHolderInterface
 	{
 	private:
 
@@ -56,6 +61,7 @@ namespace MM
 
 		#pragma endregion
 
+		void setOwner(AllocatorInterface * o);
 	private:
 
 		#pragma region Typedefs
@@ -79,6 +85,7 @@ namespace MM
 		mutable const FixedSizeAlloc* mPrev;
 		mutable const FixedSizeAlloc* mNext;
 
+		AllocatorInterface *owner; //cross-layer reference to the owner
 		#pragma endregion
 	};
 }

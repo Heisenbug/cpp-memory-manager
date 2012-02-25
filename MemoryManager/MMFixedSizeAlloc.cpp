@@ -5,6 +5,10 @@
 
 namespace MM
 {
+	void FixedSizeAlloc::setOwner(AllocatorInterface * o)
+	{
+		this->owner = o;
+	}
 	#pragma region Chunk
 
 	void FixedSizeAlloc::Chunk::Init(size_t blockSize, unsigned char blocks)
@@ -178,6 +182,9 @@ namespace MM
 					mChunks.push_back(newChunk);
 					mAllocChunk		= &mChunks.back();
 					mDeallocChunk	= &mChunks.front();
+
+					//NEW CHUNK..should be registered
+					AllocationTable::RegisterChunk(&newChunk, DEFAULT_CHUNK_SIZE, this->owner );
 					break;
 				}
 
@@ -258,4 +265,6 @@ namespace MM
 	}
 
 	#pragma endregion
+
+	
 }

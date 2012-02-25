@@ -77,6 +77,7 @@
     <ClInclude Include="MMSmallObjectAlloc.h" />
     <ClInclude Include="MMSmallObjectAllocator.h" />
     <ClInclude Include="MMSmartPointers.h" />
+    <ClInclude Include="MMTrackableChunkHolderInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
