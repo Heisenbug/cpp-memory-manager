@@ -14,9 +14,9 @@ namespace MM
 			return malloc(size);
 		}
 
-		static void operator delete(void * p)
+		static void operator delete(void* p)
 		{
-			free (p);
+			free(p);
 		}
 	}; 
 }

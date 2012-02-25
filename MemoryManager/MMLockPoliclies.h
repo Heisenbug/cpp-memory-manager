@@ -6,9 +6,15 @@ namespace MM
 	class NoLock
 	{
 	public:
-		NoLock() { }
+		NoLock() 
+		{
+			// Nothing to do
+		}
 
-		~NoLock() { }
+		~NoLock() 
+		{
+			// Nothing to do
+		}
 	};
 
 	class MutexLock
