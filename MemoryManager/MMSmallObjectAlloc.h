@@ -10,10 +10,12 @@ namespace MM
 	public:
 		SmallObjectAlloc(size_t chunkSize, size_t maxObjectSize);
 
-		void* Allocate(size_t numBytes);
-		void Deallocate(void* p, size_t size);
+		void* Allocate(size_t size);
+		void Deallocate(void* p);
 
 	private:
+		FixedSizeAlloc*	FindFixedSizeAlloc(void* p);
+
 		SmallObjectAlloc(const SmallObjectAlloc&);
 		SmallObjectAlloc& operator=(const SmallObjectAlloc&);
 

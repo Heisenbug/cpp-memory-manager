@@ -13,7 +13,26 @@ namespace MM
 {
 	class FixedSizeAlloc
 	{
+	private:
+
+		#pragma region Chunk structure
+
+		struct Chunk : public ChunkInterface
+		{
+			void	Init(size_t blockSize, unsigned char blocks);
+			void*	Allocate(size_t blockSize);
+			void	Deallocate(void* p, size_t blockSize);
+			void	Release();
+
+			unsigned char*	mData;
+			unsigned char	mFirstAvailableBlock;
+			unsigned char	mAvailableBlocks;
+		};
+
+		#pragma endregion
+
 	public:
+
 		explicit FixedSizeAlloc(size_t blockSize = 0);
 		FixedSizeAlloc(const FixedSizeAlloc&);
 		FixedSizeAlloc& operator=(const FixedSizeAlloc&);
@@ -31,29 +50,13 @@ namespace MM
 		// Comparison operator for sorting 
 		bool operator<(size_t s) const;
 
-	private:
-
-		#pragma region Chunk structure
-		
-		struct Chunk : public ChunkInterface
-		{
-			void	Init(size_t blockSize, unsigned char blocks);
-			void*	Allocate(size_t blockSize);
-			void	Deallocate(void* p, size_t blockSize);
-			void	Release();
-
-			unsigned char*	mData;
-			unsigned char	mFirstAvailableBlock;
-			unsigned char	mAvailableBlocks;
-		};
-
-		#pragma endregion
-
 		#pragma region Utilities
 
 		Chunk* FindChunk(void* p);
 
 		#pragma endregion
+
+	private:
 
 		#pragma region Typedefs
 

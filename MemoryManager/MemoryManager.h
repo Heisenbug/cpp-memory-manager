@@ -1,6 +1,9 @@
 #ifndef MEMORY_MANAGER_H_INCLUDE_GUARD
 #define MEMORY_MANAGER_H_INCLUDE_GUARD
 
+#include "MMSmallObjectAllocator.h"
+#include "MMGenericObjectAllocator.h"
+
 template<typename MemoryCategory>
 void* MM_NEW(size_t size)
 {

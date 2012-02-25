@@ -6,8 +6,17 @@
 #include "MMSmallObjectAlloc.h"
 #include "MMSingletonHolder.h"
 
+// DEFAULT_CHUNK_SIZE is alredy defined (and used) in MMFixedAlloc.h
+
+/*
+#ifndef DEFAULT_CHUNK_SIZE
 #define DEFAULT_CHUNK_SIZE		4096
+#endif
+*/ 
+
+#ifndef MAX_SMALL_OBJECT_SIZE
 #define MAX_SMALL_OBJECT_SIZE	256
+#endif
 
 namespace MM
 {
@@ -21,7 +30,7 @@ namespace MM
 
 		static void operator delete(void * p)
 		{
-			return SingletonHolder<SmallObjectAllocatorType>::Instance().Deallocate(p,size);
+			return SingletonHolder<SmallObjectAllocatorType>::Instance().Deallocate(p);
 		}
 
 	private:

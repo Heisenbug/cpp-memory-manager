@@ -83,6 +83,10 @@
     <ClCompile Include="MMFixedSizeAlloc.cpp" />
     <ClCompile Include="MMSmallObjectAlloc.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\hw4-Memory-Manager.txt" />
+    <None Include="TODO.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -79,4 +79,8 @@
       <Filter>Allocators</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="TODO.txt" />
+    <None Include="..\hw4-Memory-Manager.txt" />
+  </ItemGroup>
 </Project>

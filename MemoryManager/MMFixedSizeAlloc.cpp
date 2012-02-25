@@ -156,7 +156,7 @@ namespace MM
 			}
 		}
 
-		assert(false);
+		//assert(false);
 		return 0;
 	}
 
