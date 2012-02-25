@@ -6,6 +6,7 @@ namespace MM
 	class AllocatorInterface
 	{
 	public:
+
 		virtual void* AllocateBytes(size_t)	= 0;
 		virtual void DeallocateBytes(void*) = 0;
 	};

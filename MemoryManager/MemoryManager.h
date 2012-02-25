@@ -5,28 +5,10 @@
 #include "MMGenericObjectAllocator.h"
 
 template<typename MemoryCategory>
-void* MM_NEW(size_t size)
+void* MM_MALLOC(size_t size)
 {
 	::MM::AllocationPolicy<MemoryCategory>::AllocateBytes(size);
 }
-
-//template<typename MemoryCategory>
-//void* MM_NEW_A(size_t size)
-//{
-//
-//}
-//
-//template<typename MemoryCategory>
-//void* MM_DELETE(void* p)
-//{
-//
-//}
-//
-//template<typename MemoryCategory>
-//void* MM_DELETE_A(void* p)
-//{
-//
-//}
 
 namespace MM
 {
@@ -43,12 +25,18 @@ namespace MM
 	// AllocationPolicy for MEMCATEGORY_GENERAL
 	template<> class AllocationPolicy<MEMCATEGORY_GENERAL>
 	{
-		static inline void* AllocateBytes(size_t count)//, const char* file = 0, int line = 0, const char* func = 0) 
+		static inline void* AllocateBytes(size_t size)//, const char* file = 0, int line = 0, const char* func = 0) 
 		{
 			// Default behavior
 			// Check the size; if it's equal or lower than MAX_SMALL_OBJECT_SIZE, SmallObjectAllocator is called
-			
-			//::MM::SmallObjectAlloc::getMax
+			size_t maxSmallObjectSize = SmallObjectAllocator::GetMaxSmallObjectSize();
+
+			if (size > maxSmallObjectSize)
+			{
+				return SmallObjectAllocator::AllocateBytes(size);
+			}
+
+			return GenericObjectAllocator::AllocateBytes(size);
 		}
 
 		static inline void DeallocateBytes(void* p) 

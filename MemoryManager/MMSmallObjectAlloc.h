@@ -3,6 +3,8 @@
 
 #include "MMFixedSizeAlloc.h"
 
+#include <vector>
+
 namespace MM
 {
 	class SmallObjectAlloc

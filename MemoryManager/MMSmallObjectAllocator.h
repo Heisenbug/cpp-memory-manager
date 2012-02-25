@@ -1,12 +1,10 @@
 #ifndef MMSMALLOBJECTALLCATOR_H_INCLUDE_GUARD
 #define MMSMALLOBJECTALLCATOR_H_INCLUDE_GUARD
 
-#include "MMAllocatorInterface.h"
-
 #include "MMSmallObjectAlloc.h"
-#include "MMSingletonHolder.h"
 
-// DEFAULT_CHUNK_SIZE is alredy defined (and used) in MMFixedAlloc.h
+#include "MMAllocatorInterface.h"
+#include "MMSingletonHolder.h"
 
 /*
 #ifndef DEFAULT_CHUNK_SIZE
@@ -31,6 +29,16 @@ namespace MM
 		static void DeallocateBytes(void * p)
 		{
 			return SingletonHolder<SmallObjectAllocatorType>::Instance().Deallocate(p);
+		}
+
+		static size_t GetChunkSize()
+		{
+			return DEFAULT_CHUNK_SIZE;
+		}
+
+		static size_t GetMaxSmallObjectSize()
+		{
+			return MAX_SMALL_OBJECT_SIZE;
 		}
 
 	private:
