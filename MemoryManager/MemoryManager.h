@@ -25,10 +25,6 @@ void* MM_NEW(size_t size)
 //
 //}
 
-#ifndef MAX_SMALL_OBJECT_SIZE
-#define MAX_SMALL_OBJECT_SIZE 64
-#endif
-
 namespace MM
 {
 	// Memory allocation categories
@@ -48,9 +44,10 @@ namespace MM
 		{
 			// Default behavior
 			// Check the size; if it's equal or lower than MAX_SMALL_OBJECT_SIZE, SmallObjectAllocator is called
+			::MM::SmallObjectAlloc::getMax
 		}
 
-		static inline void deallocateBytes(void* ptr) 
+		static inline void deallocateBytes(void* ptr, size_t size = 0) 
 		{
 
 		}
