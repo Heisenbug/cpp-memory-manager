@@ -15,6 +15,8 @@ namespace MM
 		void* Allocate(size_t size);
 		void Deallocate(void* p);
 
+		virtual ~SmallObjectAlloc();
+
 	private:
 		FixedSizeAlloc*	FindFixedSizeAlloc(void* p);
 

@@ -3,7 +3,10 @@
 
 namespace MM
 {
-	struct ChunkInterface { };
+	struct ChunkInterface 
+	{
+		virtual ~ChunkInterface() { }
+	};
 }
 
 #endif // MMCHUNKINTERFACE_H_INCLUDE_GUARD
