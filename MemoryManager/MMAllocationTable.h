@@ -25,7 +25,7 @@ namespace MM
 
 	#pragma region Comparsion operators
 
-	bool operator==(const ChunkIndex& i1, const ChunkIndex& i2)
+	inline bool operator==(const ChunkIndex& i1, const ChunkIndex& i2)
 	{
 		// Suppose i1 = <p, s> and i2 = <q, t>
 
@@ -49,30 +49,30 @@ namespace MM
 			}
 		}
 		
-		return (i1 == i2);
+		return (i1.mIndex == i2.mIndex);
 	}
 
-	bool operator<(const ChunkIndex& i1, const ChunkIndex& i2)
+	inline bool operator<(const ChunkIndex& i1, const ChunkIndex& i2)
 	{
 		return i1.mIndex.first < i2.mIndex.first;
 	}
 
-	bool operator>(const ChunkIndex& i1, const ChunkIndex& i2)
+	inline bool operator>(const ChunkIndex& i1, const ChunkIndex& i2)
 	{
 		return i1.mIndex.first > i2.mIndex.first;
 	}
 
-	bool operator<=(const ChunkIndex& i1, const ChunkIndex& i2)
+	inline bool operator<=(const ChunkIndex& i1, const ChunkIndex& i2)
 	{
 		return (i1 < i2 || i1 == i2);
 	}
 
-	bool operator>=(const ChunkIndex& i1, const ChunkIndex& i2)
+	inline bool operator>=(const ChunkIndex& i1, const ChunkIndex& i2)
 	{
 		return (i1 > i2 || i1 == i2);
 	}
 
-	bool operator!=(const ChunkIndex& i1, const ChunkIndex& i2)
+	inline bool operator!=(const ChunkIndex& i1, const ChunkIndex& i2)
 	{
 		return !(i1 == i2);
 	}
@@ -92,11 +92,12 @@ namespace MM
 			//put allocator interface inside AllocatorDescriptor
 			SingletonHolder<AllocTable>::Instance().insert( std::make_pair(ChunkIndex(c, size), a) );
 		}
+
 		static void InvalidateChunk(ChunkInterface* c, size_t size, AllocatorInterface* a)
 		{
-		
-			SingletonHolder<AllocTable>::Instance().erase( ChunkIndex(c, size));
+			SingletonHolder<AllocTable>::Instance().erase( ChunkIndex(c, size) );
 		}
+
 		static AllocatorInterface* FindAllocatorFor(void* p)
 		{
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())

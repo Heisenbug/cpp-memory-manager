@@ -7,7 +7,7 @@
 
 namespace MM
 {
-	void FixedSizeAlloc::setOwner(AllocatorInterface * o)
+	void FixedSizeAlloc::SetOwner(AllocatorInterface * o)
 	{
 		this->owner = o;
 	}

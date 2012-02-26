@@ -14,6 +14,8 @@ namespace MM
 		// Every concrete class implementing this interface MUST use the owner 
 		// reference while registering allocated MMChunkInterface's to the MMAllocationTable 
 		virtual void SetOwner(AllocatorInterface* owner) = 0;
+
+		virtual ~TrackableChunkHolderInterface() { }
 	};
 }
 

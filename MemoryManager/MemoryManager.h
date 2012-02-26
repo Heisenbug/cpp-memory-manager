@@ -3,11 +3,13 @@
 
 #include "MMSmallObjectAllocator.h"
 #include "MMGenericObjectAllocator.h"
+#include "MMAllocationTable.h"
+#include "MMAllocatorInterface.h"
 
 template<typename MemoryCategory>
 void* MM_MALLOC(size_t size)
 {
-	::MM::AllocationPolicy<MemoryCategory>::AllocateBytes(size);
+	return ::MM::AllocationPolicy<MemoryCategory>::AllocateBytes(size);
 }
 
 namespace MM
@@ -18,6 +20,8 @@ namespace MM
 	// General AllocationPolicy interface
 	template <typename MemoryCategory> class AllocationPolicy 
 	{
+	public:
+
 		static inline void* AllocateBytes(size_t) { }
 		static inline void DeallocateBytes(void*) { }
 	};
@@ -25,13 +29,15 @@ namespace MM
 	// AllocationPolicy for MEMCATEGORY_GENERAL
 	template<> class AllocationPolicy<MEMCATEGORY_GENERAL>
 	{
+	public:
+
 		static inline void* AllocateBytes(size_t size)//, const char* file = 0, int line = 0, const char* func = 0) 
 		{
 			// Default behavior
 			// Check the size; if it's equal or lower than MAX_SMALL_OBJECT_SIZE, SmallObjectAllocator is called
 			size_t maxSmallObjectSize = SmallObjectAllocator::GetMaxSmallObjectSize();
 
-			if (size > maxSmallObjectSize)
+			if (size <= maxSmallObjectSize)
 			{
 				return SmallObjectAllocator::AllocateBytes(size);
 			}
@@ -41,7 +47,8 @@ namespace MM
 
 		static inline void DeallocateBytes(void* p) 
 		{
-
+			AllocatorInterface* a = AllocationTable::FindAllocatorFor(p);
+			a->DeallocateBytes(p);
 		}
 	};
 }

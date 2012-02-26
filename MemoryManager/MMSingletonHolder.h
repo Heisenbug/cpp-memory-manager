@@ -3,6 +3,9 @@
 
 #include "MMLockPoliclies.h"
 
+#include <iostream>
+#include <typeinfo>
+
 namespace MM
 {
 	template<typename T, typename LockPolicy = NoLock>
@@ -29,6 +32,7 @@ namespace MM
 
 		static void DeleteInstance()
 		{
+			std::cout << typeid(*mInstance).name() << std::endl;
 			delete mInstance;
 		} 
 

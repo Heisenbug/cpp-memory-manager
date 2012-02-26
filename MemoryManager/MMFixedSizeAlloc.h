@@ -61,7 +61,7 @@ namespace MM
 
 		#pragma endregion
 
-		void setOwner(AllocatorInterface * o);
+		void SetOwner(AllocatorInterface * o);
 
 	private:
 

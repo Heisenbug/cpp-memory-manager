@@ -9,6 +9,8 @@ namespace MM
 
 		virtual void* AllocateBytes(size_t)	= 0;
 		virtual void DeallocateBytes(void*) = 0;
+
+		virtual ~AllocatorInterface() { }
 	};
 }
 
