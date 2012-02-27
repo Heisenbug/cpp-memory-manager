@@ -7,9 +7,6 @@ namespace MM
 	{
 	public:
 
-		//virtual void* AllocateBytes(size_t)	= 0;
-		//virtual void DeallocateBytes(void*) = 0;
-
 		virtual void* Allocate(size_t) = 0;
 		virtual void Deallocate(void*) = 0;
 

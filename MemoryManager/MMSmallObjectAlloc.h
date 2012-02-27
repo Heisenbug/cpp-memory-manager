@@ -1,8 +1,8 @@
 #ifndef MMSMALLOBJECTALLOC_H_INCLUDE_GUARD
 #define MMSMALLOBJECTALLOC_H_INCLUDE_GUARD
 
-#include "MMFixedSizeAlloc.h"
 #include "MMAllocatorInterface.h"
+#include "MMFixedSizeAlloc.h"
 
 #include <vector>
 
@@ -11,6 +11,7 @@ namespace MM
 	class SmallObjectAlloc : public AllocatorInterface
 	{
 	public:
+
 		SmallObjectAlloc(size_t chunkSize, size_t maxObjectSize);
 
 		void* Allocate(size_t size);
@@ -19,6 +20,7 @@ namespace MM
 		virtual ~SmallObjectAlloc();
 
 	private:
+
 		FixedSizeAlloc*	FindFixedSizeAlloc(void* p);
 
 		SmallObjectAlloc(const SmallObjectAlloc&);

@@ -12,10 +12,10 @@ void* MM_MALLOC(size_t size)
 	return ::MM::AllocationPolicy<MemoryCategory>::AllocateBytes(size);
 }
 
-template<typename MemoryCategory>
 void MM_FREE(void* p)
 {
-	::MM::AllocationPolicy<MemoryCategory>::DeallocateBytes(p);
+	::MM::AllocatorInterface* a = ::MM::AllocationTable::FindAllocatorFor(p);
+	a->Deallocate(p);
 }
 
 namespace MM
@@ -28,8 +28,8 @@ namespace MM
 	{
 	public:
 
+		// TODO: We can add a memory tracking function...JUST IN CASE :)
 		static inline void* AllocateBytes(size_t) { }
-		static inline void DeallocateBytes(void*) { }
 	};
 	
 	// AllocationPolicy for MEMCATEGORY_GENERAL
@@ -37,7 +37,7 @@ namespace MM
 	{
 	public:
 
-		static inline void* AllocateBytes(size_t size)//, const char* file = 0, int line = 0, const char* func = 0) 
+		static inline void* AllocateBytes(size_t size)
 		{
 			// Default behavior
 			// Check the size; if it's equal or lower than MAX_SMALL_OBJECT_SIZE, SmallObjectAllocator is called
@@ -49,12 +49,6 @@ namespace MM
 			}
 
 			return GenericObjectAllocator::Allocate(size);
-		}
-
-		static inline void DeallocateBytes(void* p) 
-		{
-			AllocatorInterface* a = AllocationTable::FindAllocatorFor(p);
-			a->Deallocate(p);
 		}
 	};
 }

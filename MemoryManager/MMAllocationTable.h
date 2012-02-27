@@ -8,8 +8,6 @@
 #include <algorithm>
 #include <cassert>
 
-#include <iostream>
-
 #define DEFAULT_CHUNK_NUMBER 100
 
 namespace MM
@@ -28,6 +26,7 @@ namespace MM
 	class AllocationTable
 	{
 	public:
+
 		AllocationTable()  
 		{
 			mTable.reserve(DEFAULT_CHUNK_NUMBER);
@@ -35,7 +34,6 @@ namespace MM
 
 		static void RegisterChunk(ChunkInterface* c)
 		{
-			//put allocator interface inside AllocatorDescriptor
 			SingletonHolder<AllocationTable>::Instance().mTable.push_back(c);
 
 			std::sort(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
@@ -54,7 +52,7 @@ namespace MM
 		{
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
 
-			// Convert it into a binary search, fool!
+			// TODO: Convert it into a binary search, fool!
 			AllocTable::const_iterator it = SingletonHolder<AllocationTable>::Instance().mTable.begin();
 			for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
 			{
@@ -74,6 +72,7 @@ namespace MM
 		}
 
 	private:
+
 		AllocTable mTable;
 	};
 }

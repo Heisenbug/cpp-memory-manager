@@ -2,7 +2,6 @@
 #define MMSMALLOBJECTALLCATOR_H_INCLUDE_GUARD
 
 #include "MMSmallObjectAlloc.h"
-
 #include "MMSingletonHolder.h"
 
 /*
@@ -20,6 +19,7 @@ namespace MM
 	class SmallObjectAllocator
 	{
 	public:
+
 		static void* Allocate(size_t size)
 		{
 			return SingletonHolder<SmallObjectAllocatorType>::Instance().Allocate(size);

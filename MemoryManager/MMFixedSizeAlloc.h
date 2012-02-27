@@ -1,16 +1,15 @@
 #ifndef MMFIXEDSIZEALLOC_H_INCLUDE_GUARD
 #define MMFIXEDSIZEALLOC_H_INCLUDE_GUARD
 
+#include "MMTrackableChunkHolderInterface.h"
 #include "MMChunkInterface.h"
+#include "MMAllocatorInterface.h"
 
 #include <vector>
 
 #ifndef DEFAULT_CHUNK_SIZE
 #define DEFAULT_CHUNK_SIZE 4096
 #endif
-
-#include "MMTrackableChunkHolderInterface.h"
-#include "MMAllocatorInterface.h"
 
 namespace MM
 {

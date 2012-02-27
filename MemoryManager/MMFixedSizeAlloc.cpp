@@ -78,6 +78,8 @@ namespace MM
 	FixedSizeAlloc::FixedSizeAlloc(const FixedSizeAlloc& a)
 		: mBlockSize(a.mBlockSize), mNumBlocks(a.mNumBlocks), mChunks(a.mChunks)
 	{
+		SetOwner(a.mOwner);
+
 		mPrev			= &a;
 		mNext			= a.mNext;
 		a.mNext->mPrev	= this;
@@ -180,17 +182,22 @@ namespace MM
 					bool hasChangedAddress = false;
 					// All filled up - add a new chunk
 
-					// TODO: Migliora usando qualche algorithm STL...
-					if (mChunks.capacity() == mChunks.size()){
+					// TODO: Improve performance using a STL algorithm like remove_if
+					if (mChunks.capacity() == mChunks.size())
+					{
 						hasChangedAddress = true;
-						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it ){
+						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+						{
 							AllocationTable::InvalidateChunk(&*it);
 						}
 					}
+
 					mChunks.reserve(mChunks.size() + 1);
 
-					if (hasChangedAddress == true){
-						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it ){
+					if (hasChangedAddress == true)
+					{
+						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+						{
 							AllocationTable::RegisterChunk(&*it);
 						}
 					}
@@ -200,7 +207,7 @@ namespace MM
 					mAllocChunk		= &mChunks.back();
 					mDeallocChunk	= &mChunks.front();
 
-					//NEW CHUNK..should be registered
+					// Register the new chunk
 					AllocationTable::RegisterChunk(&mChunks.back());
 					break;
 				}
