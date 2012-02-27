@@ -29,7 +29,7 @@ namespace MM
 			void	Deallocate(void* p, size_t blockSize);
 			void	Release();
 
-			unsigned char*	mData;
+			//unsigned char*	mData;
 			unsigned char	mFirstAvailableBlock;
 			unsigned char	mAvailableBlocks;
 		};

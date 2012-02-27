@@ -199,7 +199,7 @@ namespace MM
 					mDeallocChunk	= &mChunks.front();
 
 					//NEW CHUNK..should be registered
-					AllocationTable::RegisterChunk(&newChunk, DEFAULT_CHUNK_SIZE, this->owner);
+					AllocationTable::RegisterChunk(&mChunks.back(), DEFAULT_CHUNK_SIZE, this->owner);
 					break;
 				}
 
