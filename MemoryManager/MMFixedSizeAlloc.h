@@ -24,7 +24,7 @@ namespace MM
 
 		struct Chunk : public ChunkInterface
 		{
-			void	Init(size_t blockSize, unsigned char blocks);
+			void	Init(size_t blockSize, unsigned char blocks, AllocatorInterface* owner = 0);
 			void*	Allocate(size_t blockSize);
 			void	Deallocate(void* p, size_t blockSize);
 			void	Release();

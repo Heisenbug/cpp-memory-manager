@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <cassert>
 
 #define DEFAULT_CHUNK_NUMBER 100
 
@@ -16,53 +17,58 @@ namespace MM
 	// Comparsion predicate
 	struct ChunkComparsion
 	{
-		bool operator()(const AllocTable::value_type& c1, const AllocTable::value_type& c2)
+		bool operator()(const AllocTable::value_type& c1, const AllocTable::value_type& c2) const
 		{
 			return (c1->mData < c2->mData);
 		}
 	};
 
-	struct AllocationTable
+	class AllocationTable
 	{
+	public:
 		AllocationTable() 
 			: mTable(AllocTable(DEFAULT_CHUNK_NUMBER)) { }
 
-		AllocTable mTable;
-	};
-
-	static void RegisterChunk(ChunkInterface* c)
-	{
-		//put allocator interface inside AllocatorDescriptor
-		SingletonHolder<AllocationTable>::Instance().mTable.push_back(c);
-
-		std::sort(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
-			SingletonHolder<AllocationTable>::Instance().mTable.begin(), ChunkComparsion());
-	}
-
-	static void InvalidateChunk(ChunkInterface*)
-	{
-		SingletonHolder<AllocationTable>::Instance().mTable.erase(c);
-	}
-
-	static AllocatorInterface* FindAllocatorFor(void* p)
-	{
-		// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
-
-		// Convert it into a binary search, fool!
-		AllocTable::iterator found = std::lower_bound(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
-			SingletonHolder<AllocationTable>::Instance().mTable.begin(), ChunkComparsion());
-
-		--found;
-
-		if (found != SingletonHolder<AllocationTable>::Instance().mTable.end())
+		static void RegisterChunk(ChunkInterface* c)
 		{
-			return found->mOwner;
+			//put allocator interface inside AllocatorDescriptor
+			SingletonHolder<AllocationTable>::Instance().mTable.push_back(c);
+
+			std::sort(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
+				SingletonHolder<AllocationTable>::Instance().mTable.begin(), ChunkComparsion());
 		}
 
-		// "You shall not pass!" (Gandalf, LOTR) XD
-		assert(false);
-		return 0;
-	}
+		static void InvalidateChunk(ChunkInterface* c)
+		{
+			AllocTable::iterator found = std::find(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
+				SingletonHolder<AllocationTable>::Instance().mTable.begin(), c);
+
+			SingletonHolder<AllocationTable>::Instance().mTable.erase(found);
+		}
+
+		static AllocatorInterface* FindAllocatorFor(void* p)
+		{
+			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
+
+			// Convert it into a binary search, fool!
+			AllocTable::iterator found = std::lower_bound(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
+				SingletonHolder<AllocationTable>::Instance().mTable.begin(), ChunkComparsion());
+
+			--found;
+
+			if (found != SingletonHolder<AllocationTable>::Instance().mTable.end())
+			{
+				return (*found)->mOwner;
+			}
+
+			// "You shall not pass!" (Gandalf, LOTR) XD
+			assert(false);
+			return 0;
+		}
+
+	private:
+		AllocTable mTable;
+	};
 }
 
 #endif // MMALLOCATIONTABLE_H_INCLUDE_GUARD

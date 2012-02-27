@@ -13,9 +13,10 @@ namespace MM
 	}
 	#pragma region Chunk
 
-	void FixedSizeAlloc::Chunk::Init(size_t blockSize, unsigned char blocks)
+	void FixedSizeAlloc::Chunk::Init(size_t blockSize, unsigned char blocks, AllocatorInterface* owner)
 	{
 		mData					= new unsigned char[blockSize * blocks];
+		mOwner					= owner;
 		mFirstAvailableBlock	= 0;
 		mAvailableBlocks		= blocks;
 
@@ -182,24 +183,24 @@ namespace MM
 					if (mChunks.capacity() == mChunks.size()){
 						hasChangedAddress = true;
 						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it ){
-							AllocationTable::InvalidateChunk(&*it, DEFAULT_CHUNK_SIZE, this->owner);
+							AllocationTable::InvalidateChunk(&*it);
 						}
 					}
 					mChunks.reserve(mChunks.size() + 1);
 
 					if (hasChangedAddress == true){
 						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it ){
-							AllocationTable::RegisterChunk(&*it, DEFAULT_CHUNK_SIZE, this->owner);
+							AllocationTable::RegisterChunk(&*it);
 						}
 					}
 					Chunk newChunk;
-					newChunk.Init(mBlockSize, mNumBlocks);
+					newChunk.Init(mBlockSize, mNumBlocks, owner);
 					mChunks.push_back(newChunk);
 					mAllocChunk		= &mChunks.back();
 					mDeallocChunk	= &mChunks.front();
 
 					//NEW CHUNK..should be registered
-					AllocationTable::RegisterChunk(&mChunks.back(), DEFAULT_CHUNK_SIZE, this->owner);
+					AllocationTable::RegisterChunk(&mChunks.back());
 					break;
 				}
 
