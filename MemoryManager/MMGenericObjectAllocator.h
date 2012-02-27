@@ -9,12 +9,12 @@ namespace MM
 	{
 	public:
 
-		static void* AllocateBytes(size_t size)
+		static void* Allocate(size_t size)
 		{
 			return malloc(size);
 		}
 
-		static void DeallocateBytes(void* p)
+		static void Deallocate(void* p)
 		{
 			free(p);
 		}

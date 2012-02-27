@@ -7,16 +7,13 @@
 
 namespace MM
 {
-	void FixedSizeAlloc::SetOwner(AllocatorInterface * o)
-	{
-		this->owner = o;
-	}
 	#pragma region Chunk
 
 	void FixedSizeAlloc::Chunk::Init(size_t blockSize, unsigned char blocks, AllocatorInterface* owner)
 	{
 		mData					= new unsigned char[blockSize * blocks];
 		mOwner					= owner;
+
 		mFirstAvailableBlock	= 0;
 		mAvailableBlocks		= blocks;
 
@@ -61,10 +58,12 @@ namespace MM
 
 	#pragma region FixedSizeAlloc
 
-	FixedSizeAlloc::FixedSizeAlloc(size_t blockSize)
+	FixedSizeAlloc::FixedSizeAlloc(size_t blockSize, AllocatorInterface* owner)
 		: mBlockSize(blockSize), mAllocChunk(0), mDeallocChunk(0)
 	{
 		assert(mBlockSize > 0);
+
+		SetOwner(owner);
 
 		mPrev = mNext = this;
 
@@ -180,6 +179,8 @@ namespace MM
 				{
 					bool hasChangedAddress = false;
 					// All filled up - add a new chunk
+
+					// TODO: Migliora usando qualche algorithm STL...
 					if (mChunks.capacity() == mChunks.size()){
 						hasChangedAddress = true;
 						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it ){
@@ -194,7 +195,7 @@ namespace MM
 						}
 					}
 					Chunk newChunk;
-					newChunk.Init(mBlockSize, mNumBlocks, owner);
+					newChunk.Init(mBlockSize, mNumBlocks, mOwner);
 					mChunks.push_back(newChunk);
 					mAllocChunk		= &mChunks.back();
 					mDeallocChunk	= &mChunks.front();
@@ -282,5 +283,12 @@ namespace MM
 
 	#pragma endregion
 
-	
+	#pragma region Private utilities
+
+	void FixedSizeAlloc::SetOwner(AllocatorInterface* o)
+	{
+		mOwner = o;
+	}
+
+	#pragma endregion
 }

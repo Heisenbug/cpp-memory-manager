@@ -3,7 +3,6 @@
 
 #include "MMSmallObjectAlloc.h"
 
-#include "MMAllocatorInterface.h"
 #include "MMSingletonHolder.h"
 
 /*
@@ -18,15 +17,15 @@
 
 namespace MM
 {
-	class SmallObjectAllocator : public AllocatorInterface
+	class SmallObjectAllocator
 	{
 	public:
-		static void* AllocateBytes(size_t size)
+		static void* Allocate(size_t size)
 		{
 			return SingletonHolder<SmallObjectAllocatorType>::Instance().Allocate(size);
 		}
 
-		static void DeallocateBytes(void * p)
+		static void Deallocate(void * p)
 		{
 			return SingletonHolder<SmallObjectAllocatorType>::Instance().Deallocate(p);
 		}

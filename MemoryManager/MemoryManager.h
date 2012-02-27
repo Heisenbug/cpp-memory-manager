@@ -45,16 +45,16 @@ namespace MM
 
 			if (size <= maxSmallObjectSize)
 			{
-				return SmallObjectAllocator::AllocateBytes(size);
+				return SmallObjectAllocator::Allocate(size);
 			}
 
-			return GenericObjectAllocator::AllocateBytes(size);
+			return GenericObjectAllocator::Allocate(size);
 		}
 
 		static inline void DeallocateBytes(void* p) 
 		{
 			AllocatorInterface* a = AllocationTable::FindAllocatorFor(p);
-			a->DeallocateBytes(p);
+			a->Deallocate(p);
 		}
 	};
 }

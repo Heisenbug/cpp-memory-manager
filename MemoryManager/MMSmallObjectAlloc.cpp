@@ -24,7 +24,7 @@ namespace MM
 		
 		if (i == mPool.end() || i->BlockSize() != size)
 		{
-			i = mPool.insert(i, FixedSizeAlloc(size));
+			i = mPool.insert(i, FixedSizeAlloc(size, this));
 			mLastDealloc = &*mPool.begin();
 		}
 		mLastAlloc = &*i;

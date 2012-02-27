@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <cassert>
 
+#include <iostream>
+
 #define DEFAULT_CHUNK_NUMBER 100
 
 namespace MM
@@ -26,8 +28,10 @@ namespace MM
 	class AllocationTable
 	{
 	public:
-		AllocationTable() 
-			: mTable(AllocTable(DEFAULT_CHUNK_NUMBER)) { }
+		AllocationTable()  
+		{
+			mTable.reserve(DEFAULT_CHUNK_NUMBER);
+		}
 
 		static void RegisterChunk(ChunkInterface* c)
 		{
@@ -35,13 +39,13 @@ namespace MM
 			SingletonHolder<AllocationTable>::Instance().mTable.push_back(c);
 
 			std::sort(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
-				SingletonHolder<AllocationTable>::Instance().mTable.begin(), ChunkComparsion());
+				SingletonHolder<AllocationTable>::Instance().mTable.end(), ChunkComparsion());
 		}
 
 		static void InvalidateChunk(ChunkInterface* c)
 		{
 			AllocTable::iterator found = std::find(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
-				SingletonHolder<AllocationTable>::Instance().mTable.begin(), c);
+				SingletonHolder<AllocationTable>::Instance().mTable.end(), c);
 
 			SingletonHolder<AllocationTable>::Instance().mTable.erase(found);
 		}
@@ -51,14 +55,17 @@ namespace MM
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
 
 			// Convert it into a binary search, fool!
-			AllocTable::iterator found = std::lower_bound(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
-				SingletonHolder<AllocationTable>::Instance().mTable.begin(), reinterpret_cast<ChunkInterface*>(p), ChunkComparsion());
-
-			--found;
-
-			if (found != SingletonHolder<AllocationTable>::Instance().mTable.end())
+			AllocTable::const_iterator it = SingletonHolder<AllocationTable>::Instance().mTable.begin();
+			for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
 			{
-				return (*found)->mOwner;
+				if (!((*it)->mData < p))
+					break;
+			}
+				
+			if (it != SingletonHolder<AllocationTable>::Instance().mTable.end())
+			{
+				AllocatorInterface* a = (*it)->mOwner;
+				return (*it)->mOwner;
 			}
 
 			// "You shall not pass!" (Gandalf, LOTR) XD

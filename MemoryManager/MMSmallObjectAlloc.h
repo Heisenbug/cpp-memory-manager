@@ -2,12 +2,13 @@
 #define MMSMALLOBJECTALLOC_H_INCLUDE_GUARD
 
 #include "MMFixedSizeAlloc.h"
+#include "MMAllocatorInterface.h"
 
 #include <vector>
 
 namespace MM
 {
-	class SmallObjectAlloc
+	class SmallObjectAlloc : public AllocatorInterface
 	{
 	public:
 		SmallObjectAlloc(size_t chunkSize, size_t maxObjectSize);
