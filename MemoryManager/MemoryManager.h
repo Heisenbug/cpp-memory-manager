@@ -12,6 +12,12 @@ void* MM_MALLOC(size_t size)
 	return ::MM::AllocationPolicy<MemoryCategory>::AllocateBytes(size);
 }
 
+template<typename MemoryCategory>
+void MM_FREE(void* p)
+{
+	::MM::AllocationPolicy<MemoryCategory>::DeallocateBytes(p);
+}
+
 namespace MM
 {
 	// Memory allocation categories
