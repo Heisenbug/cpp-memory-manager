@@ -52,7 +52,7 @@ namespace MM
 
 			// Convert it into a binary search, fool!
 			AllocTable::iterator found = std::lower_bound(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
-				SingletonHolder<AllocationTable>::Instance().mTable.begin(), ChunkComparsion());
+				SingletonHolder<AllocationTable>::Instance().mTable.begin(), reinterpret_cast<ChunkInterface*>(p), ChunkComparsion());
 
 			--found;
 
