@@ -25,7 +25,7 @@ void MM::SingleChunkAlloc<LockPolicy>::Release()
 
 //------------------ SINGLE CHUNK ALLOC -------------------------------
 template<typename LockPolicy>
-explicit SingleChunkAlloc<LockPolicy>::SingleChunkAlloc(size_t size)
+explicit SingleChunkAlloc<LockPolicy>::SingleChunkAlloc()
 {
 	this->chunks = new std::vector<SingleChunk*>();
 }
@@ -47,6 +47,8 @@ SingleChunkAlloc<LockPolicy>::void* Allocate(size_t size)
 	LockPolicy lock;
 	SingleChunk *newChunk = SingleChunk(size, this);
 	AllocationTable::RegisterChunk(newChunk);
+
+	this->chunks.push_back(newChunk);
 }
 template<typename LockPolicy>
 SingleChunkAlloc<LockPolicy>::void Deallocate(void* ptr)
@@ -56,7 +58,7 @@ SingleChunkAlloc<LockPolicy>::void Deallocate(void* ptr)
 
 	for (std::vector<SingleChunk*>::iterator it= this->chunks.begin(); it !=this->chunks.end() ; ++i)
 	{
-		if (*it->mData == ptr)
+		if ((*it)->mData == ptr)
 		{
 
 			ChunkInterface * chunk = *it; 

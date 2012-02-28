@@ -115,6 +115,7 @@ namespace MM
 		for (; i != mChunks.end(); ++i)
 		{
 			assert(i->mAvailableBlocks == mNumBlocks);
+			AllocationTable::InvalidateChunk(&*i);
 			i->Release();
 		}
 	}

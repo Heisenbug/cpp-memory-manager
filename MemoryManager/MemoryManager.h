@@ -43,15 +43,15 @@ namespace MM
 			// Default behavior
 			// Check the size; if it's equal or lower than MAX_SMALL_OBJECT_SIZE, SmallObjectAllocator is called
 			size_t maxSmallObjectSize = SmallObjectAllocator::GetMaxSmallObjectSize();
-			size_t maxBigObjectSize = SmallObjectAllocator::GetMaxSmallObjectSize();
+			//size_t maxBigObjectSize = SmallObjectAllocator::GetMaxSmallObjectSize();
 			if (size <= maxSmallObjectSize)
 			{
 				return SmallObjectAllocator::Allocate(size);
-			}else if (size <= maxBigObjectSize){
+			}else {
 				return BigObjectAllocator::Allocate(size);
 			}
 
-			return GenericObjectAllocator::Allocate(size);
+			//return GenericObjectAllocator::Allocate(size);
 		}
 	};
 }

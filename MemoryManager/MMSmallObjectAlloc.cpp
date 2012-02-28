@@ -8,7 +8,9 @@ namespace MM
 	SmallObjectAlloc::SmallObjectAlloc(size_t chunkSize, size_t maxObjectSize)
 		: mLastAlloc(0), mLastDealloc(0), mChunkSize(chunkSize), mMaxObjectSize(maxObjectSize) { }
 
-	SmallObjectAlloc::~SmallObjectAlloc() { }
+	SmallObjectAlloc::~SmallObjectAlloc() { 
+	
+	}
 
 	void* SmallObjectAlloc::Allocate(size_t size)
 	{
