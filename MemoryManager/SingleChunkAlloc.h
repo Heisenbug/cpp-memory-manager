@@ -16,13 +16,13 @@ class SingleChunkAlloc : public AllocatorInterface
 
 public:
 	explicit SingleChunkAlloc();
-	~SingleChunkAlloc(void);
+	~SingleChunkAlloc();
 
 	void* Allocate(size_t);
 	void Deallocate(void*);
 	
 private:
-	struct SingleChunk : public ChunkInterface
+		struct SingleChunk : public ChunkInterface
 		{
 			SingleChunk(size_t blockSize, AllocatorInterface* owner);
 			void	Release();		
@@ -31,7 +31,7 @@ private:
 
 	
 	
-	std::vector<SingleChunk *> chunks;	
+	std::vector<SingleChunk> chunks;	
 	
 };
 

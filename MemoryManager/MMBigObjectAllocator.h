@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SingleChunkAlloc.h"
 #include "MMSingletonHolder.h"
 
 namespace MM
@@ -11,12 +12,12 @@ namespace MM
 
 		static void* Allocate(size_t size)
 		{
-			return SingletonHolder<BigObjectAllocator>::Instance().Allocate(size);
+			return SingletonHolder<SingleChunkAlloc>::Instance().Allocate(size);
 		}
 
 		static void Deallocate(void * p)
 		{
-			return SingletonHolder<BigObjectAllocator>::Instance().Deallocate(p);
+			return SingletonHolder<SingleChunkAlloc>::Instance().Deallocate(p);
 		}
 		static size_t GetMaxSmallObjectSize()
 		{
