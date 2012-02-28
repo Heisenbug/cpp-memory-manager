@@ -72,22 +72,19 @@
     <ClInclude Include="MMSmallObjectAlloc.h">
       <Filter>Allocators</Filter>
     </ClInclude>
-    <ClInclude Include="MMGenericObjectAllocator.h">
-      <Filter>Allocators</Filter>
-    </ClInclude>
     <ClInclude Include="MMTrackableChunkHolderInterface.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="MMRBTree.h">
       <Filter>Data structres</Filter>
     </ClInclude>
-    <ClInclude Include="SingleChunkAlloc.h">
+    <ClInclude Include="MMSingleObjectAlloc.h">
       <Filter>Allocators</Filter>
     </ClInclude>
-    <ClInclude Include="SingleChunkAlloc.templates.h">
+    <ClInclude Include="MMSingleObjectAlloc.templates.h">
       <Filter>Allocators</Filter>
     </ClInclude>
-    <ClInclude Include="MMBigObjectAllocator.h">
+    <ClInclude Include="MMSingleObjectAllocator.h">
       <Filter>Allocators</Filter>
     </ClInclude>
   </ItemGroup>

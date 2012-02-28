@@ -60,7 +60,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MMBigObjectAllocator.h" />
+    <ClInclude Include="MMSingleObjectAllocator.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MMAllocationTable.h" />
     <ClInclude Include="MMAllocatorInterface.h" />
@@ -69,7 +69,6 @@
     <ClInclude Include="MMCreateOnAccessPtr.h" />
     <ClInclude Include="MMDeepCopyPtr.h" />
     <ClInclude Include="MMFixedSizeAlloc.h" />
-    <ClInclude Include="MMGenericObjectAllocator.h" />
     <ClInclude Include="MMLockPoliclies.h" />
     <ClInclude Include="MMOwnedPtr.h" />
     <ClInclude Include="MMRBTree.h" />
@@ -80,8 +79,8 @@
     <ClInclude Include="MMSmallObjectAllocator.h" />
     <ClInclude Include="MMSmartPointers.h" />
     <ClInclude Include="MMTrackableChunkHolderInterface.h" />
-    <ClInclude Include="SingleChunkAlloc.h" />
-    <ClInclude Include="SingleChunkAlloc.templates.h" />
+    <ClInclude Include="MMSingleObjectAlloc.h" />
+    <ClInclude Include="MMSingleObjectAlloc.templates.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
