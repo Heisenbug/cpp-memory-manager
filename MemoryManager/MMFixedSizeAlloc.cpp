@@ -170,6 +170,7 @@ namespace MM
 
 	void* FixedSizeAlloc::Allocate()
 	{
+		//LockPolicy lock;//TODO_COMMIT
 		if (mAllocChunk == 0 || mAllocChunk->mAvailableBlocks == 0)
 		{
 			// No available memory in this chunk
@@ -241,6 +242,8 @@ namespace MM
 		assert(mDeallocChunk->mData <= p);
 		assert(mDeallocChunk->mData + mNumBlocks * mBlockSize > p);
 
+
+		//LockPolicy lock; //TODO_COMMIT
 		// Call into the chunk, will adjust the inner list but won't release memory
 		mDeallocChunk->Deallocate(p, mBlockSize);
 

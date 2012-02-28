@@ -13,6 +13,7 @@
 
 namespace MM
 {
+	//template<typename LockPolicy = NoLock>//TODO_COMMIT
 	class FixedSizeAlloc : public TrackableChunkHolderInterface
 	{
 	private:
