@@ -7,8 +7,8 @@
 
 #include <vector>
 
-#ifndef DEFAULT_CHUNK_SIZE
-#define DEFAULT_CHUNK_SIZE 4096
+#ifndef DEFAULT_FSA_CHUNK_SIZE
+#define DEFAULT_FSA_CHUNK_SIZE 4096
 #endif
 
 namespace MM
@@ -19,14 +19,14 @@ namespace MM
 
 		#pragma region Chunk structure
 
-		struct Chunk : public ChunkInterface
+		struct FSAChunk : public ChunkInterface
 		{
 			void	Init(size_t blockSize, unsigned char blocks, AllocatorInterface* owner = 0);
 			void*	Allocate(size_t blockSize);
 			void	Deallocate(void* p, size_t blockSize);
 			void	Release();
 
-			//unsigned char*	mData;
+			// DataPointer	mData;
 			unsigned char	mFirstAvailableBlock;
 			unsigned char	mAvailableBlocks;
 		};
@@ -54,7 +54,7 @@ namespace MM
 
 		#pragma region Utilities
 
-		Chunk* FindChunk(void* p);
+		FSAChunk* FindChunk(void* p);
 
 		#pragma endregion
 
@@ -68,7 +68,7 @@ namespace MM
 
 		#pragma region Typedefs
 
-		typedef std::vector<Chunk> Chunks;
+		typedef std::vector<FSAChunk> Chunks;
 
 		#pragma endregion
 
@@ -79,9 +79,9 @@ namespace MM
 		Chunks			mChunks;
 
 		// Last chunk used for an allocation
-		Chunk*			mAllocChunk;
+		FSAChunk*			mAllocChunk;
 		// Last chuck accessed by a deallocation
-		Chunk*			mDeallocChunk;
+		FSAChunk*			mDeallocChunk;
 
 		// For ensuring proper copy semantics
 		mutable const FixedSizeAlloc* mPrev;

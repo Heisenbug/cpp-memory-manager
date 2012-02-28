@@ -5,11 +5,13 @@
 
 namespace MM
 {
+	typedef unsigned char* DataPointer;
+
 	struct ChunkInterface 
 	{
 		virtual ~ChunkInterface() { }
 
-		unsigned char*		mData;
+		DataPointer			mData;
 		AllocatorInterface* mOwner;
 	};
 }

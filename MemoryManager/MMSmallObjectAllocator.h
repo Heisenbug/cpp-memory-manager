@@ -5,8 +5,8 @@
 #include "MMSingletonHolder.h"
 
 /*
-#ifndef DEFAULT_CHUNK_SIZE
-#define DEFAULT_CHUNK_SIZE		4096
+#ifndef DEFAULT_FSA_CHUNK_SIZE
+#define DEFAULT_FSA_CHUNK_SIZE		4096
 #endif
 */ 
 
@@ -32,7 +32,7 @@ namespace MM
 
 		static size_t GetChunkSize()
 		{
-			return DEFAULT_CHUNK_SIZE;
+			return DEFAULT_FSA_CHUNK_SIZE;
 		}
 
 		static size_t GetMaxSmallObjectSize()
@@ -45,7 +45,7 @@ namespace MM
 		struct SmallObjectAllocatorType : public SmallObjectAlloc
 		{
 			SmallObjectAllocatorType()
-				: SmallObjectAlloc(DEFAULT_CHUNK_SIZE, MAX_SMALL_OBJECT_SIZE) { }
+				: SmallObjectAlloc(DEFAULT_FSA_CHUNK_SIZE, MAX_SMALL_OBJECT_SIZE) { }
 		};
 	}; 
 }

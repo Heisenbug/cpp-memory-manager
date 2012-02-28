@@ -68,9 +68,11 @@
     <ClInclude Include="MMCreateOnAccessPtr.h" />
     <ClInclude Include="MMDeepCopyPtr.h" />
     <ClInclude Include="MMFixedSizeAlloc.h" />
+    <ClInclude Include="MMGenericObjectAlloc.h" />
     <ClInclude Include="MMGenericObjectAllocator.h" />
     <ClInclude Include="MMLockPoliclies.h" />
     <ClInclude Include="MMOwnedPtr.h" />
+    <ClInclude Include="MMRBTree.h" />
     <ClInclude Include="MMRefCountedPtr.h" />
     <ClInclude Include="MMRefLinkedPtr.h" />
     <ClInclude Include="MMSingletonHolder.h" />

@@ -16,6 +16,9 @@
     <Filter Include="Interfaces">
       <UniqueIdentifier>{b0f4347c-3d57-4e23-b432-cdea2f105a7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data structres">
+      <UniqueIdentifier>{9f5f6f67-abd9-4691-a1b1-7121d630588d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MMSmartPointers.h">
@@ -71,6 +74,12 @@
     </ClInclude>
     <ClInclude Include="MMTrackableChunkHolderInterface.h">
       <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="MMGenericObjectAlloc.h">
+      <Filter>Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="MMRBTree.h">
+      <Filter>Data structres</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

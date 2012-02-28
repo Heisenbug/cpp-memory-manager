@@ -7,9 +7,9 @@
 
 namespace MM
 {
-	#pragma region Chunk
+	#pragma region Chunk structure
 
-	void FixedSizeAlloc::Chunk::Init(size_t blockSize, unsigned char blocks, AllocatorInterface* owner)
+	void FixedSizeAlloc::FSAChunk::Init(size_t blockSize, unsigned char blocks, AllocatorInterface* owner)
 	{
 		mData					= new unsigned char[blockSize * blocks];
 		mOwner					= owner;
@@ -18,17 +18,17 @@ namespace MM
 		mAvailableBlocks		= blocks;
 
 		unsigned char i = 0;
-		unsigned char* p = mData;
+		DataPointer p = mData;
 		for (; i != blocks; p += blockSize)
 		{
 			*p = ++i;
 		}
 	}
 
-	void* FixedSizeAlloc::Chunk::Allocate(size_t blockSize)
+	void* FixedSizeAlloc::FSAChunk::Allocate(size_t blockSize)
 	{
 		if (!mAvailableBlocks) return 0;
-		unsigned char* pRestult =
+		DataPointer pRestult =
 			mData + (mFirstAvailableBlock * blockSize);
 		// Update mFirstAvailableBlock to point to the next block
 		mFirstAvailableBlock = *pRestult;
@@ -36,10 +36,10 @@ namespace MM
 		return pRestult;
 	}
 
-	void FixedSizeAlloc::Chunk::Deallocate(void* p, size_t blockSize)
+	void FixedSizeAlloc::FSAChunk::Deallocate(void* p, size_t blockSize)
 	{
 		assert(p >= mData);
-		unsigned char* toRelease = static_cast<unsigned char*>(p);
+		DataPointer toRelease = static_cast<DataPointer>(p);
 		// Alignment check
 		assert((toRelease - mData) % blockSize == 0);
 		*toRelease = mFirstAvailableBlock;
@@ -49,7 +49,7 @@ namespace MM
 		++mAvailableBlocks;
 	}
 
-	void FixedSizeAlloc::Chunk::Release()
+	void FixedSizeAlloc::FSAChunk::Release()
 	{
 		delete[] mData;
 	}
@@ -67,7 +67,7 @@ namespace MM
 
 		mPrev = mNext = this;
 
-		size_t numBlocks = DEFAULT_CHUNK_SIZE / blockSize;
+		size_t numBlocks = DEFAULT_FSA_CHUNK_SIZE / blockSize;
 		if (numBlocks > UCHAR_MAX) numBlocks = UCHAR_MAX;
 		else if (numBlocks == 0) numBlocks = 8 * blockSize;
 
@@ -128,7 +128,7 @@ namespace MM
 		std::swap(mDeallocChunk, a.mDeallocChunk);
 	}
 
-	FixedSizeAlloc::Chunk* FixedSizeAlloc::FindChunk(void* p)
+	FixedSizeAlloc::FSAChunk* FixedSizeAlloc::FindChunk(void* p)
 	{
 		assert(!mChunks.empty());
 		assert(mDeallocChunk);
@@ -136,10 +136,10 @@ namespace MM
 		// mChuncks is searched starting from mDeallocateChunk and going up and down with two iterators
 		const std::size_t chunkLength = mNumBlocks * mBlockSize;
 
-		Chunk* lo		= mDeallocChunk;
-		Chunk* hi		= mDeallocChunk + 1;
-		Chunk* loBound	= &mChunks.front();
-		Chunk* hiBound	= &mChunks.back() + 1;
+		FSAChunk* lo		= mDeallocChunk;
+		FSAChunk* hi		= mDeallocChunk + 1;
+		FSAChunk* loBound	= &mChunks.front();
+		FSAChunk* hiBound	= &mChunks.back() + 1;
 
 		for (;;)
 		{
@@ -201,7 +201,8 @@ namespace MM
 							AllocationTable::RegisterChunk(&*it);
 						}
 					}
-					Chunk newChunk;
+
+					FSAChunk newChunk;
 					newChunk.Init(mBlockSize, mNumBlocks, mOwner);
 					mChunks.push_back(newChunk);
 					mAllocChunk		= &mChunks.back();
@@ -246,7 +247,7 @@ namespace MM
 		if (mDeallocChunk->mAvailableBlocks == mNumBlocks)
 		{
 			// mDeallocChunk is completely free, should we release it? 
-			Chunk& lastChunk = mChunks.back();
+			FSAChunk& lastChunk = mChunks.back();
 
 			if (&lastChunk == mDeallocChunk)
 			{

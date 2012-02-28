@@ -1,7 +1,12 @@
 #ifndef GENERICOBJECTALLOCATOR_H_INCLUDE_GUARD
 #define GENERICOBJECTALLOCATOR_H_INCLUDE_GUARD
 
-#include <memory>
+#include "MMGenericObjectAlloc.h"
+#include "MMSingletonHolder.h"
+
+#ifndef DEFAULT_GENERICALLOCATOR_CHUNK_SIZE
+#define DEFAULT_GENERICALLOCATOR_CHUNK_SIZE 32768
+#endif
 
 namespace MM
 {
@@ -11,13 +16,26 @@ namespace MM
 
 		static void* Allocate(size_t size)
 		{
-			return malloc(size);
+			return SingletonHolder<GenericObjectAllocatorType>::Instance().Allocate(size);
 		}
 
 		static void Deallocate(void* p)
 		{
-			free(p);
+			return SingletonHolder<GenericObjectAllocatorType>::Instance().Deallocate(p);
 		}
+
+		static size_t GetChunkSize()
+		{
+			return DEFAULT_GENERICALLOCATOR_CHUNK_SIZE;
+		}
+
+	private:
+
+		struct GenericObjectAllocatorType : public GenericObjectAlloc
+		{
+			GenericObjectAllocatorType()
+				: GenericObjectAlloc(DEFAULT_GENERICALLOCATOR_CHUNK_SIZE) { }
+		};
 	}; 
 }
 
