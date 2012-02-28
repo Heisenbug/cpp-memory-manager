@@ -7,7 +7,7 @@ namespace MM
 	{
 		mOwner = owner;
 		this->size = blockSize;
-		mData =static_cast<DataPointer> malloc(blockSize);
+		mData =static_cast<DataPointer>(malloc(blockSize));
 	}
 
 	template<typename LockPolicy>
@@ -20,45 +20,45 @@ namespace MM
 
 	//------------------ SINGLE CHUNK ALLOC -------------------------------
 	template<typename LockPolicy>
-	explicit SingleChunkAlloc<LockPolicy>::SingleChunkAlloc()
-		: chunks(std::vector<SingleChunk>())
-	{ }
+	SingleChunkAlloc<LockPolicy>::SingleChunkAlloc() { }
 
 	template<typename LockPolicy>
 	SingleChunkAlloc<LockPolicy>::~SingleChunkAlloc()
 	{
-		for (std::vector<SingleChunk*>::iterator it= this->chunks.begin(); it !=this->chunks.end() ; ++i)
+		for (std::vector<SingleChunk>::iterator it= this->chunks.begin(); it !=this->chunks.end() ; ++it)
 		{
 			AllocationTable::InvalidateChunk(&*it);
-			(*it)->Release();	
+			(*it).Release();	
 		}
-		delete this->chunks;
 	}
 
 	template<typename LockPolicy>
 	void* SingleChunkAlloc<LockPolicy>::Allocate(size_t size)
 	{
 		LockPolicy lock;
-		SingleChunk *newChunk = SingleChunk(size, this);
-		AllocationTable::RegisterChunk(newChunk);
+		SingleChunk newChunk(size, this);
+		AllocationTable::RegisterChunk(&newChunk);
 
 		this->chunks.push_back(newChunk);
+
+		return newChunk.mData;
 	}
+
 	template<typename LockPolicy>
 	void SingleChunkAlloc<LockPolicy>::Deallocate(void* ptr)
 	{
 		LockPolicy lock;
 		DataPointer data = reinterpret_cast<DataPointer>(ptr);
 
-		for (std::vector<SingleChunk*>::iterator it= this->chunks.begin(); it !=this->chunks.end() ; ++i)
+		for (std::vector<SingleChunk>::iterator it= this->chunks.begin(); it !=this->chunks.end() ; ++it)
 		{
-			if ((*it)->mData == ptr)
+			if ((*it).mData == ptr)
 			{
 
-				ChunkInterface * chunk = *it; 
+				SingleChunk chunk = *it; 
 				this->chunks.erase(it);
-				AllocationTable::InvalidateChunk(chunk);
-				chunk->Release();
+				AllocationTable::InvalidateChunk(&chunk);
+				chunk.Release();
 
 			}
 

@@ -35,5 +35,6 @@ private:
 	
 };
 
-#include "SingleChunkAlloc.templates.h"
 }
+
+#include "SingleChunkAlloc.templates.h"

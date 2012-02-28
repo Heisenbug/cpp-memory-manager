@@ -12,17 +12,18 @@ namespace MM
 
 		static void* Allocate(size_t size)
 		{
-			return SingletonHolder<SingleChunkAlloc>::Instance().Allocate(size);
+			return SingletonHolder<SingleChunkAlloc<>>::Instance().Allocate(size);
 		}
 
 		static void Deallocate(void * p)
 		{
-			return SingletonHolder<SingleChunkAlloc>::Instance().Deallocate(p);
+			return SingletonHolder<SingleChunkAlloc<>>::Instance().Deallocate(p);
 		}
 		static size_t GetMaxSmallObjectSize()
 		{
 			return MAX_BIG_OBJECT_SIZE;
 		}
+
 	private:
 
 		
