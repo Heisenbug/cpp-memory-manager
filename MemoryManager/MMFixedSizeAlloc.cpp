@@ -116,7 +116,8 @@ namespace MM
 		for (; i != mChunks.end(); ++i)
 		{
 			assert(i->mAvailableBlocks == mNumBlocks);
-			AllocationTable::InvalidateChunk(&*i);
+			MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*i);
+			//AllocationTable::InvalidateChunk(&*i);
 			i->Release();
 		}
 	}
@@ -191,7 +192,8 @@ namespace MM
 						hasChangedAddress = true;
 						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
 						{
-							AllocationTable::InvalidateChunk(&*it);
+							MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*it);
+							//AllocationTable::InvalidateChunk(&*it);
 						}
 					}
 
@@ -201,7 +203,8 @@ namespace MM
 					{
 						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
 						{
-							AllocationTable::RegisterChunk(&*it);
+							MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&*it);
+						//	AllocationTable::RegisterChunk(&*it);
 						}
 					}
 
@@ -212,7 +215,8 @@ namespace MM
 					mDeallocChunk	= &mChunks.front();
 
 					// Register the new chunk
-					AllocationTable::RegisterChunk(&mChunks.back());
+					MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&mChunks.back());
+					//AllocationTable::RegisterChunk(&mChunks.back());
 					break;
 				}
 
@@ -261,7 +265,8 @@ namespace MM
 					mDeallocChunk[-1].mAvailableBlocks == mNumBlocks)
 				{
 					// Two free chunks, discard the last one
-					AllocationTable::InvalidateChunk(&lastChunk);
+					MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&lastChunk);
+					//AllocationTable::InvalidateChunk(&lastChunk);
 					lastChunk.Release();
 					mChunks.pop_back();
 					mAllocChunk = mDeallocChunk = &mChunks.front();
@@ -272,7 +277,8 @@ namespace MM
 			if (lastChunk.mAvailableBlocks == mNumBlocks)
 			{
 				// Two free blocks, discard one
-				AllocationTable::InvalidateChunk(&lastChunk);
+				MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&lastChunk);
+				//AllocationTable::InvalidateChunk(&lastChunk);
 				lastChunk.Release();
 				mChunks.pop_back();
 				mAllocChunk = mDeallocChunk;

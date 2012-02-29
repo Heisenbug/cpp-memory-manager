@@ -40,44 +40,89 @@ namespace MM
 	{
 		for (Chunks::iterator it = mChunks.begin(); it != mChunks.end() ; ++it)
 		{
-			AllocationTable::InvalidateChunk(&*it);
+			MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*it);
+			//AllocationTable::InvalidateChunk(&*it);
 			it->Release();	
 		}
 	}
 
 	template<typename LockPolicy>
-	void* 
-	SingleChunkAlloc<LockPolicy>::Allocate(size_t size)
-	{
-		LockPolicy lock;
+        void* 
+        SingleChunkAlloc<LockPolicy>::Allocate(size_t size)
+        {
+                LockPolicy lock;
+ 
+                //bool hasChangedAddress = false;
+                
+                if (this->mChunks.size() == mChunks.capacity()){
+                
+					MM::AllocationTable::Dump();
+                        //hasChangedAddress = true;
+                        for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+                        {
+							void *toRemove = &*it;
+							MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*it);
+                            //AllocationTable::InvalidateChunk(&*it);
+                        }
+						MM::AllocationTable::Dump();
+                        mChunks.reserve(mChunks.capacity() + DEFAULT_CHUNK_NUM);
+ 
+                        for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+                        {
+							MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&*it);
+                            //AllocationTable::RegisterChunk(&*it);
+                        }
+					//	MM::AllocationTable::Dump();
+                }
+ 
+                SingleChunk newChunk;
+                newChunk.Init(size, this);
+                mChunks.push_back(newChunk);
+ 
+			//	MM::AllocationTable::Dump();
+				MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&mChunks.back());
+                //AllocationTable::RegisterChunk(&mChunks.back());
+			//	MM::AllocationTable::Dump();
+                return newChunk.Allocate();
+        }
+	//template<typename LockPolicy>
+	//void* 
+	//SingleChunkAlloc<LockPolicy>::Allocate(size_t size)
+	//{
+	//	LockPolicy lock;
 
-		bool hasChangedAddress = false;
-		if (this->mChunks.size() == mChunks.capacity()){
-		
-			hasChangedAddress = true;
-			for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
-			{
-				AllocationTable::InvalidateChunk(&*it);
-			}
-			this->mChunks.reserve(this->mChunks.capacity() + DEFAULT_CHUNK_NUM);	
-		}
+	//	bool hasChangedAddress = false;
+	//	if (this->mChunks.size() == mChunks.capacity()){
+	//	
+	//		hasChangedAddress = true;
+	//		for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+	//		{
+	//			MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*it);
+	//			//AllocationTable::InvalidateChunk(&*it);
+	//		}
+	//		this->mChunks.reserve(this->mChunks.capacity() + DEFAULT_CHUNK_NUM);	
+	//		
+	//		if (hasChangedAddress == true)
+	//		{
+	//		for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+	//		{
+	//			MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&*it);
+	//			//AllocationTable::RegisterChunk(&*it);
+	//		}
+	//	}
+	//	}
+	//	
 
-		if (hasChangedAddress == true)
-		{
-			for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
-			{
-				AllocationTable::RegisterChunk(&*it);
-			}
-		}
+	//	SingleChunk newChunk;
+	//	newChunk.Init(size, this);
+	//	mChunks.push_back(newChunk);
 
-		SingleChunk newChunk;
-		newChunk.Init(size, this);
-		mChunks.push_back(newChunk);
+	//	MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&mChunks.back());
 
-		AllocationTable::RegisterChunk(&mChunks.back());
+	//	//AllocationTable::RegisterChunk(&mChunks.back());
 
-		return newChunk.Allocate();
-	}
+	//	return newChunk.Allocate();
+	//}
 
 	template<typename LockPolicy>
 	void 
@@ -87,13 +132,26 @@ namespace MM
 
 		DataPointer data = reinterpret_cast<DataPointer>(p);
 
+		
+		//while(mChunks.begin() != mChunks.end()){
+		//	Chunks::iterator it = mChunks.begin();
+		//	if (it->mData == p)
+		//	{
+		//		MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*it);
+		//		//AllocationTable::InvalidateChunk(&*it);
+		//		it->Release();
+		//		mChunks.erase(it);
+		//		break;
+		//	}
+		//}
 		for (Chunks::iterator it = mChunks.begin(); it != mChunks.end() ; ++it)
 		{
 			if (it->mData == p)
 			{
-				AllocationTable::InvalidateChunk(&*it);
+				MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*it);
+				//AllocationTable::InvalidateChunk(&*it);
 				it->Release();
-				mChunks.erase(it);
+				it = mChunks.erase(it);
 				break;
 			}
 		}

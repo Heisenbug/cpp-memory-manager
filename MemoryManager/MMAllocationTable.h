@@ -43,6 +43,7 @@ namespace MM
 
 			std::sort(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
 				SingletonHolder<AllocationTable>::Instance().mTable.end(), ChunkComparsion());
+//			Dump();
 		}
 
 		static void InvalidateChunk(ChunkInterface* c)
@@ -119,7 +120,7 @@ namespace MM
 			int i = 0;
 			for (AllocTable::iterator it = mTable.begin(); it != mTable.end(); ++it)
 			{
-				std::cout << "Entry : " << i << " mData: "	<< reinterpret_cast<void*>((*it)->mData)
+				std::cout << "Entry : " << i << " chunk: "	<< reinterpret_cast<void*>((*it))
 							<< "\t" << "mSize: " << (*it)->mSize
 							<< "\t" << "mOwner: " << reinterpret_cast<void*>((*it)->mOwner) << std::endl;
 				++i;
