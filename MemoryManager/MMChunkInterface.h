@@ -16,6 +16,11 @@ namespace MM
 
 		AllocatorInterface* mOwner;
 	};
+
+	inline bool operator==(const ChunkInterface& c1, const ChunkInterface& c2)
+	{
+		return c1.mData == c2.mData;
+	}
 }
 
 #endif // MMCHUNKINTERFACE_H_INCLUDE_GUARD
