@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <cassert>
 
+#include <iostream>
+
 #ifndef DEFAULT_TABLE_SIZE
 #define DEFAULT_TABLE_SIZE 100
 #endif
@@ -53,14 +55,20 @@ namespace MM
 
 		static AllocatorInterface* FindAllocatorFor(void* p)
 		{
+			assert(!mTable.empty());
+
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
 
 			// TODO: Convert it into a binary search, fool!
 			AllocTable::const_iterator it = SingletonHolder<AllocationTable>::Instance().mTable.begin();
-			for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
+			
+			if (mTable.size() != 1)
 			{
-				if (!((*it)->mData < p))
-					break;
+				for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
+				{
+					if (!((*it)->mData < p))
+						break;
+				}
 			}
 				
 			if (it != SingletonHolder<AllocationTable>::Instance().mTable.end())
@@ -70,7 +78,7 @@ namespace MM
 			}
 
 			// "You shall not pass!" (Gandalf, LOTR) XD
-			assert(false);
+			//assert(false);
 			return 0;
 		}
 
@@ -79,6 +87,19 @@ namespace MM
 			while (!mTable.empty())
 			{
 				mTable.back()->mOwner->~AllocatorInterface();
+			}
+		}
+
+		static void Dump()
+		{
+			std::cout << "mTable entry numbers: " << mTable.size() << std::endl;
+			std::cout << "--------------------------------" << std::endl;
+			int i = 0;
+			for (AllocTable::iterator it = mTable.begin(); it != mTable.end(); ++it)
+			{
+				std::cout << "Entry : " << i << " mData: "	<< reinterpret_cast<void*>((*it)->mData)
+							<< "\t mOwner: " << reinterpret_cast<void*>((*it)->mOwner) << std::endl;
+				++i;
 			}
 		}
 

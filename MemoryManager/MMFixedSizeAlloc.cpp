@@ -260,6 +260,7 @@ namespace MM
 					mDeallocChunk[-1].mAvailableBlocks == mNumBlocks)
 				{
 					// Two free chunks, discard the last one
+					AllocationTable::InvalidateChunk(&lastChunk);
 					lastChunk.Release();
 					mChunks.pop_back();
 					mAllocChunk = mDeallocChunk = &mChunks.front();
@@ -270,6 +271,7 @@ namespace MM
 			if (lastChunk.mAvailableBlocks == mNumBlocks)
 			{
 				// Two free blocks, discard one
+				AllocationTable::InvalidateChunk(&lastChunk);
 				lastChunk.Release();
 				mChunks.pop_back();
 				mAllocChunk = mDeallocChunk;
@@ -277,6 +279,7 @@ namespace MM
 			else
 			{
 				// Move the empty chunk to the end
+				// TODO: Invalidate some chunks here!
 				std::swap(*mDeallocChunk, lastChunk);
 				mAllocChunk = &mChunks.back();
 			}
