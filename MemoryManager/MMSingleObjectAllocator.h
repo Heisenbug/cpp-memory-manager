@@ -10,6 +10,7 @@ namespace MM
 {
 	class SingleObjectAllocator
 	{
+
 	public:
 
 		static void* Allocate(size_t size)

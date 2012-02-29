@@ -73,19 +73,34 @@ void AllocationTest()
 	LONGLONG clock2 = t.TimeElapsedMicroSec();
 
 	std::cout << "first: " << clock1 << " - second: " << clock2 << std::endl;
-
-	for (size_t i = 0; i < N; ++i)
-	{
-		if (v[i]) 
-			MM_FREE(v[i]);
-
-		v[i] = 0;
-	}
 }
 
+static void test1()
+{
+#define NUM 20
+	void * pointers[NUM];
+
+	for (int i = 0 ; i < NUM ; ++i){
+		std::cout << "i " << i <<std::endl;
+		pointers[i] = MM_MALLOC<MM::MEMCATEGORY_GENERAL>( 500 );//(i * 7) % 2048 + 1);
+	}
+
+	if (true){
+		std::cout << "allocation works"<<std::endl;
+
+	}
+	std::cout << "------------------------------------------------"<<std::endl;
+
+	for (int i = NUM - 1 ; i >= 0 ; --i){
+		std::cout << "i " << i <<std::endl;
+		
+		
+		MM_FREE(pointers[i]);
+	}
+}
 int main()
 {
-	AllocationTest();
-
+//	AllocationTest();
+	test1();
 	return 0;
 }

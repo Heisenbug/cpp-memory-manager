@@ -12,6 +12,7 @@ namespace MM
 	template<typename LockPolicy>
 	class SingleChunkAlloc : public AllocatorInterface
 	{
+		#define DEFAULT_CHUNK_NUM 20
 	private:
 
 		#pragma region Chunk structure

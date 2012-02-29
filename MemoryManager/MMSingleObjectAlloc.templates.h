@@ -31,7 +31,9 @@ namespace MM
 	#pragma endregion 
 
 	template<typename LockPolicy>
-	SingleChunkAlloc<LockPolicy>::SingleChunkAlloc() { }
+	SingleChunkAlloc<LockPolicy>::SingleChunkAlloc() { 
+		this->mChunks.reserve(DEFAULT_CHUNK_NUM);
+	}
 
 	template<typename LockPolicy>
 	SingleChunkAlloc<LockPolicy>::~SingleChunkAlloc()
@@ -48,6 +50,25 @@ namespace MM
 	SingleChunkAlloc<LockPolicy>::Allocate(size_t size)
 	{
 		LockPolicy lock;
+
+		bool hasChangedAddress = false;
+		if (this->mChunks.size() == mChunks.capacity()){
+		
+			hasChangedAddress = true;
+			for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+			{
+				AllocationTable::InvalidateChunk(&*it);
+			}
+			this->mChunks.reserve(this->mChunks.capacity() + DEFAULT_CHUNK_NUM);	
+		}
+
+		if (hasChangedAddress == true)
+		{
+			for (Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
+			{
+				AllocationTable::RegisterChunk(&*it);
+			}
+		}
 
 		SingleChunk newChunk;
 		newChunk.Init(size, this);
