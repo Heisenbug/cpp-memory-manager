@@ -12,6 +12,8 @@ namespace MM
 		virtual ~ChunkInterface() { }
 
 		DataPointer			mData;
+		size_t				mSize;
+
 		AllocatorInterface* mOwner;
 	};
 }

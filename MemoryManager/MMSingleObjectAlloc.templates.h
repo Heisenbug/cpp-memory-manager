@@ -10,6 +10,7 @@ namespace MM
 	SingleChunkAlloc<LockPolicy>::SingleChunk::Init(size_t chunkSize, AllocatorInterface* owner)
 	{
 		mData	= new unsigned char[chunkSize];
+		mSize	= chunkSize;
 		mOwner	= owner;
 	}
 

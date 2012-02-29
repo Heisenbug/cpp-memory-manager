@@ -57,25 +57,46 @@ namespace MM
 		{
 			assert(!mTable.empty());
 
+			std::cout << "Try to search an allocator for " << p << "address..." << std::endl;
+
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
 
 			// TODO: Convert it into a binary search, fool!
 			AllocTable::const_iterator it = SingletonHolder<AllocationTable>::Instance().mTable.begin();
 			
-			if (mTable.size() != 1)
+			for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
 			{
-				for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
-				{
-					if (!((*it)->mData < p))
-						break;
-				}
+				DataPointer dataAddress = (*it)->mData;
+				size_t		dataSize	= (*it)->mSize;
+
+				if (dataAddress <= p && p <= dataAddress + dataSize)
+					break;		
 			}
-				
+
 			if (it != SingletonHolder<AllocationTable>::Instance().mTable.end())
 			{
 				AllocatorInterface* a = (*it)->mOwner;
-				return (*it)->mOwner;
+				return a;
 			}
+
+			//if (mTable.size() != 1)
+			//{
+			//	for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
+			//	{
+			//		if (!((*it)->mData < p))
+			//			break;
+			//	}
+			//}
+			//	
+			//if (it != SingletonHolder<AllocationTable>::Instance().mTable.end())
+			//{
+			//	AllocatorInterface* a = (*it)->mOwner;
+			//	return (*it)->mOwner;
+			//}
+			//else 
+			//{
+
+			//}
 
 			// "You shall not pass!" (Gandalf, LOTR) XD
 			//assert(false);
@@ -92,13 +113,15 @@ namespace MM
 
 		static void Dump()
 		{
-			std::cout << "mTable entry numbers: " << mTable.size() << std::endl;
-			std::cout << "--------------------------------" << std::endl;
+			std::cout << "--------------------------------------------------------------" << std::endl;
+			std::cout << "mTable size: " << mTable.size() << std::endl;
+			std::cout << "--------------------------------------------------------------" << std::endl;
 			int i = 0;
 			for (AllocTable::iterator it = mTable.begin(); it != mTable.end(); ++it)
 			{
 				std::cout << "Entry : " << i << " mData: "	<< reinterpret_cast<void*>((*it)->mData)
-							<< "\t mOwner: " << reinterpret_cast<void*>((*it)->mOwner) << std::endl;
+							<< "\t" << "mSize: " << (*it)->mSize
+							<< "\t" << "mOwner: " << reinterpret_cast<void*>((*it)->mOwner) << std::endl;
 				++i;
 			}
 		}

@@ -12,6 +12,7 @@ namespace MM
 	void FixedSizeAlloc::FSAChunk::Init(size_t blockSize, unsigned char blocks, AllocatorInterface* owner)
 	{
 		mData					= new unsigned char[blockSize * blocks];
+		mSize					= blockSize * blocks;
 		mOwner					= owner;
 
 		mFirstAvailableBlock	= 0;

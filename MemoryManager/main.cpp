@@ -73,6 +73,14 @@ void AllocationTest()
 	LONGLONG clock2 = t.TimeElapsedMicroSec();
 
 	std::cout << "first: " << clock1 << " - second: " << clock2 << std::endl;
+
+	for (size_t i = 0; i < N; ++i)
+	{
+		if (v[i]) 
+			MM_FREE(v[i]);
+
+		v[i] = 0;
+	}
 }
 
 int main()

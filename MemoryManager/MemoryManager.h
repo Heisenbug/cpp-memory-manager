@@ -15,7 +15,7 @@ void* MM_MALLOC(size_t size)
 
 void MM_FREE(void* p)
 {
-	::MM::AllocationTable::Dump();
+	//::MM::AllocationTable::Dump();
 	::MM::AllocatorInterface* a = ::MM::AllocationTable::FindAllocatorFor(p);
 	a->Deallocate(p);
 }
