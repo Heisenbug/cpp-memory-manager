@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MMAllocationTable.cpp" />
     <ClCompile Include="MMFixedSizeAlloc.cpp" />
     <ClCompile Include="MMSmallObjectAlloc.cpp" />
   </ItemGroup>

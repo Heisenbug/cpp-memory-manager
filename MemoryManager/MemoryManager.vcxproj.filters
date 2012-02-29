@@ -96,6 +96,9 @@
     <ClCompile Include="MMSmallObjectAlloc.cpp">
       <Filter>Allocators</Filter>
     </ClCompile>
+    <ClCompile Include="MMAllocationTable.cpp">
+      <Filter>High-Level MM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO.txt" />

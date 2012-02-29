@@ -26,8 +26,9 @@ namespace MM
 		#pragma endregion
 
 	public:
-		explicit SingleChunkAlloc();
-		~SingleChunkAlloc();
+
+		SingleChunkAlloc();
+		virtual ~SingleChunkAlloc();
 
 		void* Allocate(size_t size);
 		void Deallocate(void* p);

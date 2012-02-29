@@ -31,7 +31,8 @@ namespace MM
 
 		AllocationTable()  
 		{
-			mTable.reserve(DEFAULT_TABLE_SIZE);
+			mTable.reserve(DEFAULT_TABLE_SIZE);	
+			atexit(Destroy);
 		}
 
 		static void RegisterChunk(ChunkInterface* c)
@@ -73,9 +74,17 @@ namespace MM
 			return 0;
 		}
 
+		static void Destroy()
+		{
+			while (!mTable.empty())
+			{
+				mTable.back()->mOwner->~AllocatorInterface();
+			}
+		}
+
 	private:
 
-		AllocTable mTable;
+		static AllocTable mTable;
 	};
 }
 

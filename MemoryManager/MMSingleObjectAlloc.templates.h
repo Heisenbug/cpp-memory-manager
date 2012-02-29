@@ -69,9 +69,9 @@ namespace MM
 		{
 			if (it->mData == p)
 			{
-				mChunks.erase(it);
 				AllocationTable::InvalidateChunk(&*it);
 				it->Release();
+				mChunks.erase(it);
 				break;
 			}
 		}

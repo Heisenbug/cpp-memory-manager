@@ -19,7 +19,7 @@ namespace MM
 				if (!mInstance)
 				{
 					mInstance = new T();
-					atexit(DeleteInstance);
+					//atexit(DeleteInstance);
 				}
 			}
 
@@ -28,10 +28,10 @@ namespace MM
 
 	private:
 
-		static void DeleteInstance()
-		{
-			delete mInstance;
-		} 
+		//static void DeleteInstance()
+		//{
+		//	delete mInstance;
+		//} 
 
 		static T* mInstance;
 	};
