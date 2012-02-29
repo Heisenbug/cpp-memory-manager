@@ -16,6 +16,8 @@ void AllocationTest()
 
 	const size_t N = 1000;
 	const size_t M = 1000;
+
+	const size_t MAX_EXPONENT = 10;
 	
 	void* v[N];
 	for (size_t i = 0; i < N; ++i)
@@ -64,8 +66,13 @@ void AllocationTest()
 		}
 		else
 		{
+			size_t randomSize = 1;
+			size_t exponent = 1 + rand() % MAX_EXPONENT; 
+
+			randomSize <<= exponent;
+
 			std::cout << "Allocating." << std::endl;
-			v[r] = MM_MALLOC<MM::MEMCATEGORY_GENERAL>(512);
+			v[r] = MM_MALLOC<MM::MEMCATEGORY_GENERAL>(randomSize);
 		}
 	}
 
