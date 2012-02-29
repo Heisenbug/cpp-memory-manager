@@ -58,7 +58,7 @@ namespace MM
 		{
 			assert(!mTable.empty());
 
-			std::cout << "Try to search an allocator for " << p << "address..." << std::endl;
+			std::cout << "Try to search an allocator for " << p << std::endl;
 
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
 
@@ -120,7 +120,8 @@ namespace MM
 			int i = 0;
 			for (AllocTable::iterator it = mTable.begin(); it != mTable.end(); ++it)
 			{
-				std::cout << "Entry : " << i << " chunk: "	<< reinterpret_cast<void*>((*it))
+				std::cout << "Entry : " << i << " *: "	<< reinterpret_cast<void*>((*it))
+							<< "\t" << "mData: " << reinterpret_cast<void*>((*it)->mData)
 							<< "\t" << "mSize: " << (*it)->mSize
 							<< "\t" << "mOwner: " << reinterpret_cast<void*>((*it)->mOwner) << std::endl;
 				++i;
