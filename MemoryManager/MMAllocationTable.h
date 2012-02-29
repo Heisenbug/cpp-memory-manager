@@ -16,14 +16,14 @@
 
 namespace MM
 {
-	typedef std::vector<ChunkInterface*> AllocTable;
+	typedef std::vector<ChunkInterface> AllocTable;
 
 	// Comparsion predicate
 	struct ChunkComparsion
 	{
 		bool operator()(const AllocTable::value_type& c1, const AllocTable::value_type& c2) const
 		{
-			return (c1->mData < c2->mData);
+			return (c1.mData < c2.mData);
 		}
 	};
 
@@ -37,16 +37,15 @@ namespace MM
 			atexit(Destroy);
 		}
 
-		static void RegisterChunk(ChunkInterface* c)
+		static void RegisterChunk(const ChunkInterface& c)
 		{
 			SingletonHolder<AllocationTable>::Instance().mTable.push_back(c);
 
 			std::sort(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
 				SingletonHolder<AllocationTable>::Instance().mTable.end(), ChunkComparsion());
-//			Dump();
 		}
 
-		static void InvalidateChunk(ChunkInterface* c)
+		static void UnregisterChunk(const ChunkInterface& c)
 		{
 			AllocTable::iterator found = std::find(SingletonHolder<AllocationTable>::Instance().mTable.begin(), 
 				SingletonHolder<AllocationTable>::Instance().mTable.end(), c);
@@ -67,8 +66,8 @@ namespace MM
 			
 			for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
 			{
-				DataPointer dataAddress = (*it)->mData;
-				size_t		dataSize	= (*it)->mSize;
+				DataPointer dataAddress = it->mData;
+				size_t		dataSize	= it->mSize;
 
 				if (dataAddress <= p && p <= dataAddress + dataSize)
 					break;		
@@ -76,31 +75,12 @@ namespace MM
 
 			if (it != SingletonHolder<AllocationTable>::Instance().mTable.end())
 			{
-				AllocatorInterface* a = (*it)->mOwner;
+				AllocatorInterface* a = it->mOwner;
 				return a;
 			}
 
-			//if (mTable.size() != 1)
-			//{
-			//	for (; it != SingletonHolder<AllocationTable>::Instance().mTable.end(); ++it)
-			//	{
-			//		if (!((*it)->mData < p))
-			//			break;
-			//	}
-			//}
-			//	
-			//if (it != SingletonHolder<AllocationTable>::Instance().mTable.end())
-			//{
-			//	AllocatorInterface* a = (*it)->mOwner;
-			//	return (*it)->mOwner;
-			//}
-			//else 
-			//{
-
-			//}
-
 			// "You shall not pass!" (Gandalf, LOTR) XD
-			//assert(false);
+			assert(false);
 			return 0;
 		}
 
@@ -108,7 +88,7 @@ namespace MM
 		{
 			while (!mTable.empty())
 			{
-				mTable.back()->mOwner->~AllocatorInterface();
+				mTable.back().mOwner->~AllocatorInterface();
 			}
 		}
 
@@ -120,10 +100,10 @@ namespace MM
 			int i = 0;
 			for (AllocTable::iterator it = mTable.begin(); it != mTable.end(); ++it)
 			{
-				std::cout << "Entry : " << i << " *: "	<< reinterpret_cast<void*>((*it))
-							<< "\t" << "mData: " << reinterpret_cast<void*>((*it)->mData)
-							<< "\t" << "mSize: " << (*it)->mSize
-							<< "\t" << "mOwner: " << reinterpret_cast<void*>((*it)->mOwner) << std::endl;
+				std::cout << "Entry : " << i
+							<< "\t" << "mData: " << reinterpret_cast<void*>(it->mData)
+							<< "\t" << "mSize: " << it->mSize
+							<< "\t" << "mOwner: " << reinterpret_cast<void*>(it->mOwner) << std::endl;
 				++i;
 			}
 		}

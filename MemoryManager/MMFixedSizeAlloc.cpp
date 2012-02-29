@@ -116,8 +116,7 @@ namespace MM
 		for (; i != mChunks.end(); ++i)
 		{
 			assert(i->mAvailableBlocks == mNumBlocks);
-			MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*i);
-			//AllocationTable::InvalidateChunk(&*i);
+			AllocationTable::UnregisterChunk(*i);
 			i->Release();
 		}
 	}
@@ -186,27 +185,7 @@ namespace MM
 					bool hasChangedAddress = false;
 					// All filled up - add a new chunk
 
-					// TODO: Improve performance using a STL algorithm like remove_if
-					if (mChunks.capacity() == mChunks.size())
-					{
-						hasChangedAddress = true;
-						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
-						{
-							MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&*it);
-							//AllocationTable::InvalidateChunk(&*it);
-						}
-					}
-
 					mChunks.reserve(mChunks.size() + 1);
-
-					if (hasChangedAddress == true)
-					{
-						for (MM::FixedSizeAlloc::Chunks::iterator it = mChunks.begin(); it != mChunks.end(); ++it)
-						{
-							MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&*it);
-						//	AllocationTable::RegisterChunk(&*it);
-						}
-					}
 
 					FSAChunk newChunk;
 					newChunk.Init(mBlockSize, mNumBlocks, mOwner);
@@ -215,8 +194,7 @@ namespace MM
 					mDeallocChunk	= &mChunks.front();
 
 					// Register the new chunk
-					MM::SingletonHolder<AllocationTable>::Instance().RegisterChunk(&mChunks.back());
-					//AllocationTable::RegisterChunk(&mChunks.back());
+					AllocationTable::RegisterChunk(mChunks.back());
 					break;
 				}
 
@@ -248,7 +226,6 @@ namespace MM
 		assert(mDeallocChunk->mData <= p);
 		assert(mDeallocChunk->mData + mNumBlocks * mBlockSize > p);
 
-
 		//LockPolicy lock; //TODO_COMMIT
 		// Call into the chunk, will adjust the inner list but won't release memory
 		mDeallocChunk->Deallocate(p, mBlockSize);
@@ -265,8 +242,7 @@ namespace MM
 					mDeallocChunk[-1].mAvailableBlocks == mNumBlocks)
 				{
 					// Two free chunks, discard the last one
-					MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&lastChunk);
-					//AllocationTable::InvalidateChunk(&lastChunk);
+					AllocationTable::UnregisterChunk(lastChunk);
 					lastChunk.Release();
 					mChunks.pop_back();
 					mAllocChunk = mDeallocChunk = &mChunks.front();
@@ -277,8 +253,7 @@ namespace MM
 			if (lastChunk.mAvailableBlocks == mNumBlocks)
 			{
 				// Two free blocks, discard one
-				MM::SingletonHolder<AllocationTable>::Instance().InvalidateChunk(&lastChunk);
-				//AllocationTable::InvalidateChunk(&lastChunk);
+				AllocationTable::UnregisterChunk(lastChunk);
 				lastChunk.Release();
 				mChunks.pop_back();
 				mAllocChunk = mDeallocChunk;
@@ -286,7 +261,6 @@ namespace MM
 			else
 			{
 				// Move the empty chunk to the end
-				// TODO: Invalidate some chunks here!
 				std::swap(*mDeallocChunk, lastChunk);
 				mAllocChunk = &mChunks.back();
 			}
