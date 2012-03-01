@@ -17,7 +17,7 @@ void AllocationTest()
 	const size_t N = 1000;
 	const size_t M = 1000;
 
-	const size_t MAX_EXPONENT = 10;
+	//const size_t MAX_EXPONENT = 10;
 	
 	void* v[N];
 	for (size_t i = 0; i < N; ++i)
@@ -27,52 +27,53 @@ void AllocationTest()
 
 	t.Start();
 
-	//for (size_t j = 0; j < M ; ++j)
-	//{
-	//	const int r = rand() % N;
-	//	std::cout << j << ": Try to access at v[" << r << "]...";
-	//	if (v[r])
-	//	{
-	//		std::cout << "Deleting...";
-	//		delete(v[r]);
-	//		v[r] = 0;
-	//	}
-	//	else
-	//	{
-	//		std::cout << "Allocating...";
-	//		v[r] = new AllocationTestStruct;
-	//	}
-	//	std::cout << "OK." << std::endl;
-	//}
+	for (size_t j = 0; j < M ; ++j)
+	{
+		const int r = rand() % N;
+		//std::cout << j << ": Try to access at v[" << r << "]...";
+		if (v[r])
+		{
+			//std::cout << "Deleting...";
+			delete(v[r]);
+			v[r] = 0;
+		}
+		else
+		{
+			//std::cout << "Allocating...";
+			v[r] = new AllocationTestStruct;
+		}
+	}
 
 	LONGLONG clock1 = t.TimeElapsedMicroSec();
 
-	//for (size_t i = 0; i < N; ++i)
-	//{
-	//	v[i] = 0;
-	//}
+	for (size_t i = 0; i < N; ++i)
+	{
+		v[i] = 0;
+	}
 
 	t.Start();
 
 	for (size_t j = 0; j < M; ++j)
 	{
 		const int r = rand() % N;
-		std::cout << j << ": Try to access at v[" << r << "]...";
+		//std::cout << j << ": Try to access at v[" << r << "]...";
 		if(v[r])
 		{
-			std::cout << "Deleting." << std::endl;
+			//std::cout << "Deleting." << std::endl;
 			MM_FREE(v[r]);
 			v[r] = 0;
 		}
 		else
 		{
-			size_t randomSize = 1;
-			size_t exponent = 1 + rand() % MAX_EXPONENT; 
+			//size_t randomSize = 1;
+			//size_t exponent = 1 + rand() % MAX_EXPONENT; 
 
-			randomSize <<= exponent;
+			//randomSize <<= exponent;
 
-			std::cout << "Allocating." << std::endl;
-			v[r] = MM_MALLOC<MM::MEMCATEGORY_GENERAL>(randomSize);
+			//std::cout << "Allocating (" << randomSize << ")." << std::endl;
+			//v[r] = MM_MALLOC<MM::MEMCATEGORY_GENERAL>(randomSize);
+			
+			v[r] = MM_MALLOC<MM::MEMCATEGORY_GENERAL>(sizeof(AllocationTestStruct));
 		}
 	}
 

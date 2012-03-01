@@ -143,6 +143,8 @@ namespace MM
 		FSAChunk* loBound	= &mChunks.front();
 		FSAChunk* hiBound	= &mChunks.back() + 1;
 
+		if (hi == hiBound) hi = 0;
+
 		for (;;)
 		{
 			if (lo)
@@ -151,7 +153,11 @@ namespace MM
 				{
 					return lo;
 				}
-				if (lo == loBound) lo = 0;
+				if (lo == loBound) 
+				{
+					lo = 0;
+					if (hi == 0) break;
+				}
 				else --lo;
 			}
 
@@ -161,8 +167,11 @@ namespace MM
 				{
 					return hi;
 				}
-
-				if (++hi == hiBound) hi = 0;
+				if (++hi == hiBound) 
+				{
+					hi = 0;
+					if (lo == 0) break;
+				}
 			}
 		}
 
@@ -182,19 +191,18 @@ namespace MM
 			{
 				if (i == mChunks.end())
 				{
-					bool hasChangedAddress = false;
 					// All filled up - add a new chunk
-
 					mChunks.reserve(mChunks.size() + 1);
 
 					FSAChunk newChunk;
 					newChunk.Init(mBlockSize, mNumBlocks, mOwner);
 					mChunks.push_back(newChunk);
-					mAllocChunk		= &mChunks.back();
-					mDeallocChunk	= &mChunks.front();
 
 					// Register the new chunk
 					AllocationTable::RegisterChunk(mChunks.back());
+
+					mAllocChunk		= &mChunks.back();
+					mDeallocChunk	= &mChunks.front();
 					break;
 				}
 

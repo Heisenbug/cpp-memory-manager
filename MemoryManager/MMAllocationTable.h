@@ -57,8 +57,6 @@ namespace MM
 		{
 			assert(!mTable.empty());
 
-			std::cout << "Try to search an allocator for " << p << std::endl;
-
 			// TODO: This segment is NOT thread-safe! (A multiple acces can invalidate the calculus of end())
 
 			// TODO: Convert it into a binary search, fool!

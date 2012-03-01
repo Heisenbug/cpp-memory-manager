@@ -81,6 +81,8 @@ namespace MM
 		FixedSizeAlloc* loBound = &mPool.front();
 		FixedSizeAlloc* hiBound	= &mPool.back() + 1;
 
+		if (hi == hiBound) hi = 0;
+
 		for (;;)
 		{
 			if (lo)
