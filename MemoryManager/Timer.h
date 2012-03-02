@@ -5,16 +5,17 @@
 class Timer
 {
 public:
+
 	Timer();
 
-public:
-	void	Start();
+	void Start();
 
 	int	TimeElapsedSec() const;
 	int	TimeElapsedMilliSec() const;
 	LONGLONG TimeElapsedMicroSec() const;
 
 private:
+
 	LONGLONG start;
 	LONGLONG freq;
 };

@@ -8,11 +8,12 @@
 
 namespace MM
 {
+	template<typename LockPolicy>
 	class SmallObjectAlloc : public AllocatorInterface
 	{
 	public:
 
-		SmallObjectAlloc(size_t chunkSize, size_t maxObjectSize);
+		SmallObjectAlloc(size_t maxObjectSize);
 
 		void* Allocate(size_t size);
 		void Deallocate(void* p);
@@ -30,9 +31,10 @@ namespace MM
 		FixedSizeAlloc*					mLastAlloc;
 		FixedSizeAlloc*					mLastDealloc;
 
-		size_t							mChunkSize;
 		size_t							mMaxObjectSize;
 	};
 }
+
+#include "MMSmallObjectAlloc.templates.h"
 
 #endif // MMSMALLOBJECTALLOCATOR_H_INCLUDE_GUARD

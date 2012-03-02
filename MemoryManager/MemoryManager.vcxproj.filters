@@ -22,6 +22,12 @@
     <Filter Include="Test">
       <UniqueIdentifier>{e9b9b03c-4520-447b-8e09-a4c9bb028770}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AllocPolicies">
+      <UniqueIdentifier>{87ae4dc3-efda-4083-9bee-9e39807c38dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STL Allocators">
+      <UniqueIdentifier>{57f9c2a9-81d5-4d88-b153-032ae163b399}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MMSmartPointers.h">
@@ -90,13 +96,34 @@
     <ClInclude Include="Timer.h">
       <Filter>Test</Filter>
     </ClInclude>
+    <ClInclude Include="MMAllocationTracker.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MMConfig.h">
+      <Filter>High-Level MM</Filter>
+    </ClInclude>
+    <ClInclude Include="MMPreprocDirectives.h">
+      <Filter>High-Level MM</Filter>
+    </ClInclude>
+    <ClInclude Include="MMSmallObjectAlloc.templates.h">
+      <Filter>Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="MMGenericObjectAllocator.h">
+      <Filter>Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="MMGenericObjectAlloc.h">
+      <Filter>Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="MMAllocatedObject.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MMGeneralAllocPolicy.h">
+      <Filter>AllocPolicies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MMFixedSizeAlloc.cpp">
-      <Filter>Allocators</Filter>
-    </ClCompile>
-    <ClCompile Include="MMSmallObjectAlloc.cpp">
       <Filter>Allocators</Filter>
     </ClCompile>
     <ClCompile Include="MMAllocationTable.cpp">
@@ -104,7 +131,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TODO.txt" />
     <None Include="..\hw4-Memory-Manager.txt" />
   </ItemGroup>
 </Project>

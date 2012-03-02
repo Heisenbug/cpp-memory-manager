@@ -17,17 +17,18 @@ namespace MM
 		}
 	};
 
+	template<typename Host>
 	class MutexLock
 	{
 	public:
 		MutexLock() 
 		{
-			// TODO: Acquire mutex
+			// TODO: Enter critical section
 		}
 
 		~MutexLock()
 		{
-			// TODO: Release mutex
+			// TODO: Leave critial section 
 		}
 	};
 }

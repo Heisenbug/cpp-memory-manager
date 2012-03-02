@@ -13,7 +13,10 @@ namespace MM
 		// mOwner is a cross-layer reference to the AllocatorInterface.
 		// Every concrete class implementing this interface MUST use the owner 
 		// reference while registering allocated ChunkInterface's to the AllocationTable 
-		virtual void SetOwner(AllocatorInterface* owner) = 0;
+		virtual void SetOwner(AllocatorInterface* owner)
+		{
+			mOwner = owner;
+		}
 
 		virtual ~TrackableChunkHolderInterface() { }
 

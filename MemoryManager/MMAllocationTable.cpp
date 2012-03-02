@@ -2,5 +2,5 @@
 
 namespace MM
 {
-	AllocTable AllocationTable::mTable = AllocTable();
+	AllocationTable::AllocTable AllocationTable::mTable = AllocTable();
 }

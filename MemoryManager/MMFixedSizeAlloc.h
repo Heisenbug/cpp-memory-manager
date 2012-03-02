@@ -7,13 +7,8 @@
 
 #include <vector>
 
-#ifndef DEFAULT_FSA_CHUNK_SIZE
-#define DEFAULT_FSA_CHUNK_SIZE 4096
-#endif
-
 namespace MM
 {
-	//template<typename LockPolicy = NoLock>//TODO_COMMIT
 	class FixedSizeAlloc : public TrackableChunkHolderInterface
 	{
 	private:
@@ -36,6 +31,8 @@ namespace MM
 
 	public:
 
+		#pragma region Constructors and destructor
+
 		explicit FixedSizeAlloc(size_t blockSize = 0, AllocatorInterface* owner = 0);
 		FixedSizeAlloc(const FixedSizeAlloc&);
 		FixedSizeAlloc& operator=(const FixedSizeAlloc&);
@@ -43,29 +40,29 @@ namespace MM
 
 		void Swap(FixedSizeAlloc& a);
 
+		#pragma endregion
+
+		#pragma region Allocation and deallocation 
+
 		// Allocate a memory block
 		void* Allocate();
 		// Deallocate a memory block previously allocated with Allocate()
 		void Deallocate(void* p);
 
+		#pragma endregion
+
+		#pragma region Utilities
+		
 		// Returns the block size with which the FixedSizeAlloc was initialized
 		size_t BlockSize() const;
 		// Comparison operator for sorting 
 		bool operator<(size_t s) const;
-
-		#pragma region Utilities
 
 		FSAChunk* FindChunk(void* p);
 
 		#pragma endregion
 
 	private:
-
-		#pragma region Private utilities
-
-		void SetOwner(AllocatorInterface* owner);
-
-		#pragma endregion
 
 		#pragma region Typedefs
 

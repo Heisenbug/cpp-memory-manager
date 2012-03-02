@@ -1,7 +1,7 @@
 #ifndef MMSINGLEOBJECTALLOC_TEMPLATES_H_INCLUDE_GUARD
 #define MMSINGLEOBJECTALLOC_TEMPLATES_H_INCLUDE_GUARD
 
-#define DEFAULT_CHUNK_NUMBER 20
+#include "MMPreprocDirectives.h"
 
 namespace MM 
 {
@@ -9,7 +9,7 @@ namespace MM
 
 	template<typename LockPolicy>
 	void
-	SingleChunkAlloc<LockPolicy>::SingleChunk::Init(size_t chunkSize, AllocatorInterface* owner)
+	SingleObjectAlloc<LockPolicy>::SingleChunk::Init(size_t chunkSize, AllocatorInterface* owner)
 	{
 		mData	= new unsigned char[chunkSize];
 		mSize	= chunkSize;
@@ -18,28 +18,30 @@ namespace MM
 
 	template<typename LockPolicy>
 	void*
-	SingleChunkAlloc<LockPolicy>::SingleChunk::Allocate()
+	SingleObjectAlloc<LockPolicy>::SingleChunk::Allocate()
 	{
 		return mData;
 	}
 
 	template<typename LockPolicy>
 	void 
-	SingleChunkAlloc<LockPolicy>::SingleChunk::Release()
+	SingleObjectAlloc<LockPolicy>::SingleChunk::Release()
 	{
 		delete[] mData;
 	}
 
 	#pragma endregion 
 
+	#pragma region SingleChunkAlloc
+
 	template<typename LockPolicy>
-	SingleChunkAlloc<LockPolicy>::SingleChunkAlloc() 
+	SingleObjectAlloc<LockPolicy>::SingleObjectAlloc() 
 	{ 
-		mChunks.reserve(DEFAULT_CHUNK_NUMBER);
+		mChunks.reserve(SINGLECHUNKALLOC_DEFAULT_CHUNK_NUMBER);
 	}
 
 	template<typename LockPolicy>
-	SingleChunkAlloc<LockPolicy>::~SingleChunkAlloc()
+	SingleObjectAlloc<LockPolicy>::~SingleObjectAlloc()
 	{
 		for (Chunks::iterator it = mChunks.begin(); it != mChunks.end() ; ++it)
 		{
@@ -50,7 +52,7 @@ namespace MM
 
 	template<typename LockPolicy>
 	void* 
-	SingleChunkAlloc<LockPolicy>::Allocate(size_t size)
+	SingleObjectAlloc<LockPolicy>::Allocate(size_t size)
 	{
 		LockPolicy lock;
  
@@ -64,7 +66,7 @@ namespace MM
 
 	template<typename LockPolicy>
 	void 
-	SingleChunkAlloc<LockPolicy>::Deallocate(void* p)
+	SingleObjectAlloc<LockPolicy>::Deallocate(void* p)
 	{
 		LockPolicy lock;
 
@@ -81,7 +83,8 @@ namespace MM
 			}
 		}
 	}
+
+	#pragma endregion
 }
 
 #endif // MMSINGLEOBJECTALLOC_TEMPLATES_H_INCLUDE_GUARD
-

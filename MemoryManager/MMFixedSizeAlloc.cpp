@@ -5,6 +5,8 @@
 #include <utility>
 #include <cassert>
 
+#include "MMPreprocDirectives.h"
+
 namespace MM
 {
 	#pragma region Chunk structure
@@ -68,7 +70,7 @@ namespace MM
 
 		mPrev = mNext = this;
 
-		size_t numBlocks = DEFAULT_FSA_CHUNK_SIZE / blockSize;
+		size_t numBlocks = FSA_DEFAULT_CHUNK_SIZE / blockSize;
 		if (numBlocks > UCHAR_MAX) numBlocks = UCHAR_MAX;
 		else if (numBlocks == 0) numBlocks = 8 * blockSize;
 
@@ -181,7 +183,6 @@ namespace MM
 
 	void* FixedSizeAlloc::Allocate()
 	{
-		//LockPolicy lock;//TODO_COMMIT
 		if (mAllocChunk == 0 || mAllocChunk->mAvailableBlocks == 0)
 		{
 			// No available memory in this chunk
@@ -234,7 +235,6 @@ namespace MM
 		assert(mDeallocChunk->mData <= p);
 		assert(mDeallocChunk->mData + mNumBlocks * mBlockSize > p);
 
-		//LockPolicy lock; //TODO_COMMIT
 		// Call into the chunk, will adjust the inner list but won't release memory
 		mDeallocChunk->Deallocate(p, mBlockSize);
 
@@ -283,15 +283,6 @@ namespace MM
 	bool FixedSizeAlloc::operator<(size_t s) const
 	{ 
 		return BlockSize() < s; 
-	}
-
-	#pragma endregion
-
-	#pragma region Private utilities
-
-	void FixedSizeAlloc::SetOwner(AllocatorInterface* o)
-	{
-		mOwner = o;
 	}
 
 	#pragma endregion

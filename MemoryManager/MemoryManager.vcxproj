@@ -60,6 +60,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MMAllocatedObject.h" />
+    <ClInclude Include="MMAllocationTracker.h" />
+    <ClInclude Include="MMConfig.h" />
+    <ClInclude Include="MMGeneralAllocPolicy.h" />
+    <ClInclude Include="MMGenericObjectAlloc.h" />
+    <ClInclude Include="MMGenericObjectAllocator.h" />
+    <ClInclude Include="MMPreprocDirectives.h" />
     <ClInclude Include="MMSingleObjectAllocator.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MMAllocationTable.h" />
@@ -75,6 +82,7 @@
     <ClInclude Include="MMRefCountedPtr.h" />
     <ClInclude Include="MMRefLinkedPtr.h" />
     <ClInclude Include="MMSingletonHolder.h" />
+    <ClInclude Include="MMSmallObjectAlloc.templates.h" />
     <ClInclude Include="MMSmallObjectAlloc.h" />
     <ClInclude Include="MMSmallObjectAllocator.h" />
     <ClInclude Include="MMSmartPointers.h" />
@@ -87,11 +95,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MMAllocationTable.cpp" />
     <ClCompile Include="MMFixedSizeAlloc.cpp" />
-    <ClCompile Include="MMSmallObjectAlloc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\hw4-Memory-Manager.txt" />
-    <None Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

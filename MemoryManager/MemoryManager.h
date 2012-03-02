@@ -1,58 +1,74 @@
 #ifndef MEMORY_MANAGER_H_INCLUDE_GUARD
 #define MEMORY_MANAGER_H_INCLUDE_GUARD
 
-#include "MMSmallObjectAllocator.h"
-#include "MMSingleObjectAllocator.h"
-#include "MMAllocationTable.h"
-#include "MMAllocatorInterface.h"
+#include "MMConfig.h"
 
-template<typename MemoryCategory>
-void* MM_MALLOC(size_t size)
-{
-	//::MM::AllocationTable::Dump();
-	return ::MM::AllocationPolicy<MemoryCategory>::AllocateBytes(size);
-}
-
-void MM_FREE(void* p)
-{
-	//::MM::AllocationTable::Dump();
-	::MM::AllocatorInterface* a = ::MM::AllocationTable::FindAllocatorFor(p);
-	a->Deallocate(p);
-}
+#include <typeinfo>
 
 namespace MM
 {
-	// Memory allocation categories
-	typedef struct MEMCATEGORY_GENERAL { };
-
-	// General AllocationPolicy interface
-	template <typename MemoryCategory> class AllocationPolicy 
+	// Utility function for constructing an array of objects with placement new,
+	template<typename T>
+	T* ConstructArray(T* p, size_t count)
 	{
-	public:
-
-		// TODO: We can add a memory tracking function...JUST IN CASE :)
-		static inline void* AllocateBytes(size_t) { }
-	};
-	
-	// AllocationPolicy for MEMCATEGORY_GENERAL
-	template<> class AllocationPolicy<MEMCATEGORY_GENERAL>
-	{
-	public:
-
-		static inline void* AllocateBytes(size_t size)
+		for (size_t i = 0; i < count; ++i)
 		{
-			// Default behavior
-			// Check the size; if it's equal or lower than MAX_SMALL_OBJECT_SIZE, SmallObjectAllocator is called
-			size_t maxSmallObjectSize = SmallObjectAllocator::GetMaxSmallObjectSize();
-
-			if (size <= maxSmallObjectSize)
-			{
-				return SmallObjectAllocator::Allocate(size);
-			}
-
-			return SingleObjectAllocator::Allocate(size);
+			new ((void*)(p + i)) T();
 		}
-	};
+		return p;
+	}
 }
+
+#if MM_DEBUG_MODE
+
+// Allocate a block of raw memory, and indicate the category of usage
+#	define MM_MALLOC(size, category) ::MM::AllocationPolicy<category>::AllocateBytes(size, typeid(category).name(), __FILE__, __LINE__, __FUNCTION__);
+// Allocate a block of memory for a primitive type, and indicate the category of usage
+#	define MM_ALLOC_T(T, count, category) static_cast<T*>(::MM::AllocationPolicy<category>::AllocateBytes((sizeof(T)*(count)), typeid(category).name(), __FILE__, __LINE__, __FUNCTION__))
+// Free the memory allocated with MM_MALLOC or MM_ALLOC_T
+#	define MM_FREE(p) ::MM::GenericDeallocation(p);
+#	define MM_FREE_CAT(p, category) ::MM::AllocationPolicy<category>::DeallocateBytes((void*)p)
+// Allocate space for one primitive type, external type or non-virtual type with constructor parameters
+#	define MM_NEW_T(T, category) new (::MM::AllocationPolicy<category>::AllocateBytes(sizeof(T), typeid(category).name(), __FILE__, __LINE__, __FUNCTION__)) T
+// Allocate a block of memory for 'count' primitive types - do not use for classes that inherit from AllocatedObject
+#	define MM_NEW_ARRAY_T(T, count, category) ::MM::ConstructArray(static_cast<T*>(::MM::AllocationPolicy<category>::AllocateBytes((sizeof(T)*(count)), typeid(category).name(), __FILE__, __LINE__, __FUNCTION__)), count) 
+// Free the memory allocated with MM_NEW_T
+#	define MM_DELETE_T(p, T) if (p) { (p)(p)->~T(); ::MM::GenericDeallocation(p); } 
+#	define MM_DELETE_T_CAT(p, T, category) if (p) { (p)->~T(); ::MM::AllocationPolicy<category>::DeallocateBytes((void*)ptr); }
+// Free the memory allocated with MM_NEW_ARRAY_T
+#	define MM_DELETE_ARRAY_T(p, T, count) if (p) { for (size_t i = 0; i < count; ++i) { (p)[i].~T(); } ::MM::GenericDeallocation(p); }
+#	define MM_DELETE_ARRAY_T_CAT(p, T, count, category) if (p) { for (size_t i = 0; i < count; ++i) { (p)[i].~T(); } ::MM::AllocationPolicy<category>::DeallocateBytes((void*)p); }
+
+// new / delete for classes deriving from AllocatedObject
+// Also hooks up the file/line/function params
+// Can only be used with classes that derive from AllocatedObject since customised new/delete needed
+#	define OGRE_NEW new (__FILE__, __LINE__, __FUNCTION__)
+#	define OGRE_DELETE delete
+
+#else
+
+// Allocate a block of raw memory, and indicate the category of usage
+#	define MM_MALLOC(size, category) ::MM::AllocationPolicy<category>::AllocateBytes(size);
+// Allocate a block of memory for a primitive type, and indicate the category of usage
+#	define MM_ALLOC_T(T, count, category) static_cast<T*>(::MM::AllocationPolicy<category>::AllocateBytes(sizeof(T)*(count)))
+// Free the memory allocated with MM_MALLOC or MM_ALLOC_T
+#	define MM_FREE(p) ::MM::GenericDeallocation(p);
+#	define MM_FREE_CAT(p, category) ::MM::AllocationPolicy<category>::DeallocateBytes((void*)p)
+// Allocate space for one primitive type, external type or non-virtual type with constructor parameters
+#	define MM_NEW_T(T, category) new (::MM::AllocationPolicy<category>::AllocateBytes(sizeof(T)) T
+// Allocate a block of memory for 'count' primitive types - do not use for classes that inherit from AllocatedObject
+#	define MM_NEW_ARRAY_T(T, count, category) ::MM::ConstructArray(static_cast<T*>(::MM::AllocationPolicy<category>::AllocateBytes(sizeof(T)*(count))), count) 
+// Free the memory allocated with MM_NEW_T
+#	define MM_DELETE_T(p, T) if (p) { (p)(p)->~T(); ::MM::GenericDeallocation(p); } 
+#	define MM_DELETE_T_CAT(p, T, category) if (p) { (p)->~T(); ::MM::AllocationPolicy<category>::DeallocateBytes((void*)ptr); }
+// Free the memory allocated with MM_NEW_ARRAY_T
+#	define MM_DELETE_ARRAY_T(p, T, count) if (p) { for (size_t i = 0; i < count; ++i) { (p)[i].~T(); } ::MM::GenericDeallocation(p); }
+#	define MM_DELETE_ARRAY_T_CAT(p, T, count, category) if (p) { for (size_t i = 0; i < count; ++i) { (p)[i].~T(); } ::MM::AllocationPolicy<category>::DeallocateBytes((void*)p); }
+
+// new / delete for classes deriving from AllocatedObject
+#	define OGRE_NEW new 
+#	define OGRE_DELETE delete
+
+#endif // MM_DEBUG_MODE
 
 #endif // MEMORY_MANAGER_H_INCLUDE_GUARD

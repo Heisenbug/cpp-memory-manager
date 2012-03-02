@@ -4,48 +4,59 @@
 #include "MMSmallObjectAlloc.h"
 #include "MMSingletonHolder.h"
 
-/*
-#ifndef DEFAULT_FSA_CHUNK_SIZE
-#define DEFAULT_FSA_CHUNK_SIZE		4096
-#endif
-*/ 
+#include "MMPreprocDirectives.h"
+#include "MMLockPoliclies.h"
 
-#ifndef MAX_SMALL_OBJECT_SIZE
-#define MAX_SMALL_OBJECT_SIZE	256
-#endif
+#include "MMAllocationTracker.h"
 
 namespace MM
 {
 	class SmallObjectAllocator
 	{
+	private:
+
+#ifndef MM_ENABLE_MULTITHREAD
+		typedef NoLock LockPolicy;
+#else
+		struct SmallObjectAllocLockTypeTag { };
+
+		typedef MutexLock<SmallObjectAllocLockTypeTag> LockPolicy;
+#endif
+
 	public:
 
-		static void* Allocate(size_t size)
+		static void* Allocate(size_t size, const char* category, const char* file, size_t line, const char* func)
 		{
-			return SingletonHolder<SmallObjectAllocatorType>::Instance().Allocate(size);
+			void* p = SingletonHolder<SmallObjectAllocatorType, LockPolicy>::Instance().Allocate(size);
+			AllocationTracker::GetInstance().RecordAllocation(p, size, category, file, line, func);
+			return p;
 		}
 
 		static void Deallocate(void * p)
 		{
-			return SingletonHolder<SmallObjectAllocatorType>::Instance().Deallocate(p);
+			AllocationTracker::GetInstance().RecordDellocation(p);
+			return SingletonHolder<SmallObjectAllocatorType, LockPolicy>::Instance().Deallocate(p);
 		}
 
 		static size_t GetChunkSize()
 		{
-			return DEFAULT_FSA_CHUNK_SIZE;
+			return FSA_DEFAULT_CHUNK_SIZE;
 		}
 
 		static size_t GetMaxSmallObjectSize()
 		{
-			return MAX_SMALL_OBJECT_SIZE;
+			return SOA_MAX_SMALL_OBJECT_SIZE;
 		}
 
 	private:
 
-		struct SmallObjectAllocatorType : public SmallObjectAlloc
+		// Private constructor
+		SmallObjectAllocator() { }
+
+		struct SmallObjectAllocatorType : public SmallObjectAlloc<LockPolicy>
 		{
 			SmallObjectAllocatorType()
-				: SmallObjectAlloc(DEFAULT_FSA_CHUNK_SIZE, MAX_SMALL_OBJECT_SIZE) { }
+				: SmallObjectAlloc<LockPolicy>(SOA_MAX_SMALL_OBJECT_SIZE) { }
 		};
 	}; 
 }

@@ -3,14 +3,13 @@
 
 #include "MMAllocatorInterface.h"
 #include "MMChunkInterface.h"
-#include "MMAllocationTable.h"
 
 #include <vector>
 
 namespace MM
 {
 	template<typename LockPolicy>
-	class SingleChunkAlloc : public AllocatorInterface
+	class SingleObjectAlloc : public AllocatorInterface
 	{
 	private:
 
@@ -27,12 +26,20 @@ namespace MM
 
 	public:
 
-		SingleChunkAlloc();
-		virtual ~SingleChunkAlloc();
+		#pragma region Constructors and destructor
+
+		SingleObjectAlloc();
+		virtual ~SingleObjectAlloc();
+
+		#pragma endregion
+
+		#pragma region Allocate and deallocate
 
 		void* Allocate(size_t size);
 		void Deallocate(void* p);
 	
+		#pragma endregion
+
 	private:
 
 		typedef std::vector<SingleChunk> Chunks;

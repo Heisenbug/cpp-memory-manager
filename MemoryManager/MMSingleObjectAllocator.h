@@ -4,27 +4,45 @@
 #include "MMSingleObjectAlloc.h"
 #include "MMSingletonHolder.h"
 
+#include "MMPreprocDirectives.h"
 #include "MMLockPoliclies.h"
 
 namespace MM
 {
 	class SingleObjectAllocator
 	{
+	private:
+
+#ifndef MM_ENABLE_MULTITHREAD
+		typedef NoLock LockPolicy;
+#else
+		struct SingleObjectAllocLockTypeTag { };
+
+		typedef MutexLock<SingleObjectAllocLockTypeTag> LockPolicy;
+#endif
+
 	public:
 
-		static void* Allocate(size_t size)
+		static void* Allocate(size_t size, const char* category, const char* file, size_t line, const char* func)
 		{
-			return SingletonHolder<SingleChunkAllocType>::Instance().Allocate(size);
+			void* p = SingletonHolder<SingleObjectAllocType, LockPolicy>::Instance().Allocate(size);
+			AllocationTracker::GetInstance().RecordAllocation(p, size, category, file, line, func);
+			return p;
 		}
 
 		static void Deallocate(void * p)
 		{
-			return SingletonHolder<SingleChunkAllocType>::Instance().Deallocate(p);
+			AllocationTracker::GetInstance().RecordDellocation(p);
+			return SingletonHolder<SingleObjectAllocType, LockPolicy>::Instance().Deallocate(p);
 		}
 
 	private:
 
-		struct SingleChunkAllocType : public SingleChunkAlloc<NoLock> { };
+		// Private constructor
+		SingleObjectAllocator() { }
+
+		struct SingleObjectAllocType 
+			: public SingleObjectAlloc<LockPolicy> { };
 	}; 
 }
 
