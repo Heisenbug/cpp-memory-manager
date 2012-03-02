@@ -120,6 +120,12 @@
     <ClInclude Include="MMGeneralAllocPolicy.h">
       <Filter>AllocPolicies</Filter>
     </ClInclude>
+    <ClInclude Include="StackAllocator.h">
+      <Filter>STL Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="MMDefaultAllocator.h">
+      <Filter>STL Allocators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

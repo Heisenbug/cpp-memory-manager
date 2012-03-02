@@ -94,6 +94,7 @@ public :
     inline void destroy(pointer p) { 
 	
 		//do nothing
+		
 		p->~T();
 	}
 

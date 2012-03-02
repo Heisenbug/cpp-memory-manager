@@ -63,6 +63,7 @@
     <ClInclude Include="MMAllocatedObject.h" />
     <ClInclude Include="MMAllocationTracker.h" />
     <ClInclude Include="MMConfig.h" />
+    <ClInclude Include="MMDefaultAllocator.h" />
     <ClInclude Include="MMGeneralAllocPolicy.h" />
     <ClInclude Include="MMGenericObjectAlloc.h" />
     <ClInclude Include="MMGenericObjectAllocator.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="MMTrackableChunkHolderInterface.h" />
     <ClInclude Include="MMSingleObjectAlloc.h" />
     <ClInclude Include="MMSingleObjectAlloc.templates.h" />
+    <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
