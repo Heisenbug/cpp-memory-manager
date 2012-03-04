@@ -46,14 +46,14 @@ public :
 			toDestruct->~T();
 		*/
 	}
-    inline explicit StackAllocator(std::allocator<value_type> const& other) {
-		
-		assert(other.bufferSize <= this->bufferSize);
+ //   inline explicit StackAllocator(std::allocator<value_type> const& other) {
+	//	
+	//	assert(other.bufferSize <= this->bufferSize);
 
-		this->freeIndex = other.freeIndex;
-	//	memcpy(this->buffer, other.buffer, other.freeIndex);
-		
-	}
+	//	this->freeIndex = other.freeIndex;
+	////	memcpy(this->buffer, other.buffer, other.freeIndex);
+	//	
+	//}
     template<typename U>
     inline explicit StackAllocator(StackAllocator<U> const& other) 
 	{
@@ -93,8 +93,6 @@ public :
 	}
     inline void destroy(pointer p) { 
 	
-		//do nothing
-		
 		p->~T();
 	}
 

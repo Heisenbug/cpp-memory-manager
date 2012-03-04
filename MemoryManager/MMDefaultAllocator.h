@@ -36,10 +36,10 @@ public :
 	{
 	
 	}
-    inline explicit MMDefaultAllocator(std::allocator<value_type> const& other) {
+   /* inline explicit MMDefaultAllocator(std::allocator<value_type> const& other) {
 		
 		
-	}
+	}*/
     template<typename U>
     inline explicit MMDefaultAllocator(MMDefaultAllocator<U> const& other) 
 	{
@@ -60,7 +60,7 @@ public :
 
     
     inline size_type max_size() const { 
-		return MM::MAX_ALLOCATION_SIZE;
+		return std::limits<size_t>.max();
 	}
 
     //    construction/destruction

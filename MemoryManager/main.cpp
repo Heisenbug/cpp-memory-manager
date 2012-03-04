@@ -1,4 +1,5 @@
 #include "MemoryManager.h"
+#include "StackAllocator.h"
 
 #include "Timer.h"
 
@@ -87,9 +88,40 @@ void AllocationTest()
 	}
 }
 
+class Foobar
+{
+public:
+	Foobar(int v){
+		val = v;
+	}
+	int val;
+
+	inline bool operator < (const Foobar& o){
+		return (val < o .val) ;
+	}
+};
+void StackAllocatorTest()
+{
+	std::vector<Foobar, MM::StackAllocator<Foobar>> vec;
+
+	for (int i= 7 ; i >=0 ; --i ){
+		vec.push_back(Foobar(i));
+	}
+
+	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it){
+		std::cout << (*it).val << std::endl;
+	}
+
+	std::sort(vec.begin(), vec.end());
+
+	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it){
+		std::cout << (*it).val << std::endl;
+	}
+}
 int main()
 {
-	AllocationTest();
+	StackAllocatorTest();
+//	AllocationTest();
 
 	return 0;
 }

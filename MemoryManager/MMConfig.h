@@ -18,10 +18,7 @@
 
 namespace MM
 {
-	#pragma region Limits
-
-	static const size_t MAX_ALLOCATION_SIZE = 10000000;
-	#pragma endregion
+	
 	#pragma region Categories
 
 	// Memory allocation categories
