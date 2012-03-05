@@ -34,9 +34,9 @@ namespace MM
 
 		static inline void DeallocateBytes(void* p)
 		{
-			void *ptr = *((void**)((unsigned int)p - sizeof(void*)));
+			void* ptr = *((void**)((unsigned int)p - sizeof(void*)));
 
-			DeallocateBytesAligned(p);
+			DeallocateBytesAligned(ptr);
 		}
 
 	private:
@@ -58,7 +58,7 @@ namespace MM
 			return SingleObjectAllocator::Allocate(blockSize, category, file, line, func);
 		}
 
-		static inline void* DeallocateBytesAligned(void* p)
+		static inline void DeallocateBytesAligned(void* ptr)
 		{
 			GenericDeallocation(ptr);
 		}

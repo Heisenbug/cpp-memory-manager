@@ -95,5 +95,9 @@ int main()
 
 	//AllocationTest();
 
+	void* p = MM_MALLOC_ALIGN(32, MM::MEMCATEGORY_GENERAL, 16);
+
+	MM_FREE_ALIGN(p, MM::MEMCATEGORY_GENERAL, 16);
+
 	return 0;
 }
