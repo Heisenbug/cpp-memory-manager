@@ -2,7 +2,6 @@
 #define MMSINGLEOBJECTALLOCATOR_H_INCLUDE_GUARD
 
 #include "MMSingleObjectAlloc.h"
-#include "MMSingletonHolder.h"
 
 #include "MMPreprocDirectives.h"
 #include "MMLockPoliclies.h"
@@ -21,28 +20,36 @@ namespace MM
 		typedef MutexLock<SingleObjectAllocLockTypeTag> LockPolicy;
 #endif
 
+		struct SingleObjectAllocType 
+			: public SingleObjectAlloc<LockPolicy> { } mAlloc;
+
 	public:
 
-		static void* Allocate(size_t size, const char* category, const char* file, size_t line, const char* func)
+		static SingleObjectAllocator& GetInstance()
 		{
-			void* p = SingletonHolder<SingleObjectAllocType, LockPolicy>::Instance().Allocate(size);
+			// TODO: You need a lock?
+
+			static SingleObjectAllocator alloc;
+			return alloc;
+		}
+
+		void* Allocate(size_t size, const char* category, const char* file, size_t line, const char* func)
+		{
+			void* p = mAlloc.Allocate(size);
 			AllocationTracker::GetInstance().RecordAllocation(p, size, category, file, line, func);
 			return p;
 		}
 
-		static void Deallocate(void * p)
+		void Deallocate(void * p)
 		{
 			AllocationTracker::GetInstance().RecordDellocation(p);
-			return SingletonHolder<SingleObjectAllocType, LockPolicy>::Instance().Deallocate(p);
+			mAlloc.Deallocate(p);
 		}
 
 	private:
 
 		// Private constructor
 		SingleObjectAllocator() { }
-
-		struct SingleObjectAllocType 
-			: public SingleObjectAlloc<LockPolicy> { };
 	}; 
 }
 

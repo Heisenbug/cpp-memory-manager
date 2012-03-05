@@ -2,7 +2,6 @@
 #define MMGENERICOBJECTALLOCATOR_H_INCLUDE_GUARD
 
 #include "MMGenericObjectAlloc.h"
-#include "MMSingletonHolder.h"
 
 #include "MMPreprocDirectives.h"
 #include "MMLockPoliclies.h"
@@ -21,27 +20,35 @@ namespace MM
 		typedef MutexLock<GenericObjectAllocLockTypeTag> LockPolicy;
 #endif
 
+		struct GenericObjectAllocType 
+			: public GenericObjectAlloc<LockPolicy> { } mAlloc;
+
 	public:
 
-		static void* Allocate(size_t size_t size, const char* category, const char* file, size_t line, const char* func)
+		static GenericObjectAllocator& GetInstance()
 		{
-			// TODO: Record this allocation
-			return SingletonHolder<GenericObjectAllocType, LockPolicy>::Instance().Allocate(size);
+			// TODO: You need a lock?
+
+			static GenericObjectAllocator alloc;
+			return alloc;
 		}
 
-		static void Deallocate(void * p)
+		void* Allocate(size_t size, const char* category, const char* file, size_t line, const char* func)
+		{
+			// TODO: Record this allocation
+			return mAlloc.Allocate(size);
+		}
+
+		void Deallocate(void * p)
 		{
 			// TODO: Record this deallocation
-			return SingletonHolder<GenericObjectAllocType, LockPolicy>::Instance().Deallocate(p);
+			mAlloc.Deallocate(p);
 		}
 
 	private:
 
 		// Private constructor
 		GenericObjectAllocator() { }
-
-		struct GenericObjectAllocType 
-			: public GenericObjectAlloc<LockPolicy> { };
 	};
 }
 

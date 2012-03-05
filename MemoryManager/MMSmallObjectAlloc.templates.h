@@ -11,7 +11,10 @@ namespace MM
 		: mLastAlloc(0), mLastDealloc(0), mMaxObjectSize(maxObjectSize) { }
 
 	template<typename LockPolicy>
-	SmallObjectAlloc<LockPolicy>::~SmallObjectAlloc() { }
+	SmallObjectAlloc<LockPolicy>::~SmallObjectAlloc() {
+
+		std::cout << "SmallObjectAlloc destroyed" << std::endl;
+	}
 
 	template<typename LockPolicy>
 	void* 

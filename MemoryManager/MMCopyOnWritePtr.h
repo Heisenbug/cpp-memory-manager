@@ -31,7 +31,7 @@ namespace MM
 			return *this;
 		}
 
-		template<typename U> friend class CopyOnWritePtr<U>;
+		template<typename U> friend class CopyOnWritePtr;
 
 		template<typename U> 
 		CopyOnWritePtr(const CopyOnWritePtr<U>& ptr)

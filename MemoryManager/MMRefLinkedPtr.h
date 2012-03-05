@@ -40,7 +40,7 @@ namespace MM
 			Release();
 		}
 
-		template<typename U> friend class RefLinkedPtr<U>;
+		template<typename U> friend class RefLinkedPtr;
 
 		template<typename U> 
 		RefLinkedPtr(const RefLinkedPtr<U>& ptr)

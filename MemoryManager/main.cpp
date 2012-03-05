@@ -161,10 +161,10 @@ void TestSTLAllocator()
 
 int main()
 {
-	TestSTLAllocator();
-	RunningOut();
+	//TestSTLAllocator();
+	//RunningOut();
 	//StackAllocatorTest();
-	// AllocationTest();
+	AllocationTest();
 
 	return 0;
 }

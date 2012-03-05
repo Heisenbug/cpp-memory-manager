@@ -41,7 +41,7 @@ namespace MM
 			if (mOwn) delete mPointee;
 		}
 
-		template<typename U> friend class OwnedPtr<U>;
+		template<typename U> friend class OwnedPtr;
 
 		template<typename U> 
 		OwnedPtr(const OwnedPtr<U>& ptr)

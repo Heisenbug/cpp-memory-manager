@@ -37,7 +37,7 @@ namespace MM
 			Release();
 		}
 
-		template<typename U> friend class RefCountedPtr<U>;
+		template<typename U> friend class RefCountedPtr;
 
 		template<typename U> 
 		RefCountedPtr(const RefCountedPtr<U>& ptr)
@@ -78,6 +78,15 @@ namespace MM
 
 	private:
 
+		struct RCPImpl 
+		{
+			RCPImpl(pointer p = 0, unsigned int c = 1) 
+				: mPointee(p), mCounter(c) { }
+
+			pointee_type	mPointee;
+			unsigned		mCounter;
+		}* mRCPImpl;
+
 		// Increment the counter
 		void Acquire(RCPImpl* impl)
 		{ 
@@ -97,15 +106,6 @@ namespace MM
 				mRCPImpl = 0;
 			}
 		}
-
-		struct RCPImpl 
-		{
-			RCPImpl(pointer p = 0, unsigned int c = 1) 
-				: mPointee(p), mCounter(c) { }
-
-			pointee_type	mPointee;
-			unsigned		mCounter;
-		}* mRCPImpl;
 	};
 }
 

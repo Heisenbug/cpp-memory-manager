@@ -7,8 +7,6 @@
 
 namespace MM
 {
-	
-
 	// This is an STL allocator that allocates bytes on the stack.
 	// When you use it in order to allocate a container, we suggest 
 	// you to use a reserve immediately after its creation. 
@@ -35,39 +33,25 @@ namespace MM
 		typedef StackAllocator<U> other;
 	};
 
-	#pragma endregion
 	template<typename U> 
 	friend class StackAllocator;
+
+	#pragma endregion
+
 	#pragma region Constructors and destructor
 
-	inline  StackAllocator()
-		: mBufferSize(0), mMarker(0) {
-		mMarkerPtr = NULL;
-		this->bufferPtr = NULL;
-	}
-	inline explicit StackAllocator(unsigned char* buf, size_t size)
-		: mBufferSize(size), mMarker(0) 
-	{
-		std::cout << "New allocator<" << typeid(T).name() << ", " << size << ">: " << mBufferSize << " elements\n";
-		mMarkerPtr = &mMarker;
-		this->bufferPtr = buf;
-	}
+	inline StackAllocator()
+		: mBufferPtr(0), mBufferSize(0), mMarker(0), mMarkerPtr(0) { }
+
+	inline explicit StackAllocator(unsigned char* buffer, size_t size)
+		: mBufferPtr(buffer), mBufferSize(size), mMarker(0), mMarkerPtr(&mMarker) { }
 
 	inline StackAllocator(const StackAllocator& other)
-		: mBufferSize(other.mBufferSize), mMarker(0) 
-	{ 
-		mMarkerPtr = other.mMarkerPtr;
-		this->bufferPtr = other.bufferPtr;
-	}
+		: mBufferPtr(other.mBufferPtr), mBufferSize(other.mBufferSize), mMarker(0), mMarkerPtr(other.mMarkerPtr) { }
 
 	template<typename U>
 	inline StackAllocator(const StackAllocator<U>& other) 
-		: mBufferSize(other.mBufferSize), mMarker(0) 
-	{
-		std::cout << "New (copied) allocator<" << typeid(T).name() << ", " << mBufferSize << ">: " << mBufferSize << " elements\n";
-		mMarkerPtr = other.mMarkerPtr;
-		this->bufferPtr = other.bufferPtr;
-	}
+		: mBufferPtr(other.mBufferPtr), mBufferSize(other.mBufferSize), mMarker(0), mMarkerPtr(other.mMarkerPtr) { }
 
 	inline ~StackAllocator() { }
 
@@ -91,13 +75,11 @@ namespace MM
 
 	inline pointer allocate(size_type cnt, const void* = 0) 
 	{ 		
-		std::cout << "<" << typeid(T).name() << ", " << mBufferSize << "> Try to allocate " << cnt << " elements [" << *mMarkerPtr << ", " << mBufferSize * sizeof(value_type) << "\n";
 		assert(*mMarkerPtr + cnt * sizeof(value_type) <= mBufferSize * sizeof(value_type));
 		size_t availableIndex = *mMarkerPtr;
 		*mMarkerPtr += cnt * sizeof(value_type);
-		std::cout << "New mMarker: " <<*mMarkerPtr << std::endl;
 
-		return reinterpret_cast<pointer>(&bufferPtr[availableIndex]);
+		return reinterpret_cast<pointer>(&mBufferPtr[availableIndex]);
 	}
 
 	inline void deallocate(pointer p, size_type) 
@@ -144,14 +126,17 @@ namespace MM
 	#pragma endregion
 
 	private:
-	//StackAllocator built using a copy constructor MUST use the same memory of the original allocator:
-	//inside every method the buffer and the marker MUST be accessed through pointers.
-	size_t *mMarkerPtr;
-	unsigned char* bufferPtr;
-	size_t			mBufferSize;		// Number of elements storable into the buffer
+		// StackAllocator built using a copy constructor use the same memory of the original allocator.
+		// Inside every method the buffer and the marker MUST be accessed through pointers
+		unsigned char*	mBufferPtr;
 
-	// 
-	size_t			mMarker; //Index to the first available block of the buffer. Only a StackAllocator build explicetly will initialize this field 
+		// Number of elements storable into the buffer
+		size_t			mBufferSize;
+
+		//Index to the first available block of the buffer. Only a StackAllocator build explicetly will initialize this field
+		size_t			mMarker;
+
+		size_t*			mMarkerPtr;
 	};     
 }
 

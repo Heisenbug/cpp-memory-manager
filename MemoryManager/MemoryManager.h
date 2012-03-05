@@ -3,6 +3,8 @@
 
 #include "MMConfig.h"
 
+#include "MMSmartPointers.h"
+
 #include <typeinfo>
 
 namespace MM

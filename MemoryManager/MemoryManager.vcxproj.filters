@@ -132,9 +132,6 @@
     <ClCompile Include="MMFixedSizeAlloc.cpp">
       <Filter>Allocators</Filter>
     </ClCompile>
-    <ClCompile Include="MMAllocationTable.cpp">
-      <Filter>High-Level MM</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\hw4-Memory-Manager.txt" />
