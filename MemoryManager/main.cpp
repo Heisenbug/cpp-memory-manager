@@ -98,7 +98,7 @@ public:
 	int val;
 
 	inline bool operator < (const Foobar& o){
-		return (val < o .val) ;
+		return (val < o.val) ;
 	}
 };
 
@@ -161,6 +161,12 @@ void TestSTLAllocator()
 
 int main()
 {
+	InitMemoryManager();
+
+	void* p = MM_MALLOC(64, MM::MEMCATEGORY_GENERAL);
+
+	MM_FREE(p);
+
 	//TestSTLAllocator();
 	//RunningOut();
 	//StackAllocatorTest();

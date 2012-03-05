@@ -21,6 +21,11 @@ namespace MM
 	}
 }
 
+void InitMemoryManager()
+{
+	::MM::AllocationTable::Init();
+}
+
 #if MM_DEBUG_MODE
 
 // Allocate a block of raw memory, and indicate the category of usage
@@ -41,14 +46,22 @@ namespace MM
 #	define MM_DELETE_ARRAY_T(p, T, count) if (p) { for (size_t i = 0; i < count; ++i) { (p)[i].~T(); } ::MM::GenericDeallocation(p); }
 #	define MM_DELETE_ARRAY_T_CAT(p, T, count, category) if (p) { for (size_t i = 0; i < count; ++i) { (p)[i].~T(); } ::MM::AllocationPolicy<category>::DeallocateBytes((void*)p); }
 
-#define MM_MALLOC_ALIGNED(size, align, category) ::MM::AlignedAllocationPolicy<category>::AllocateBytes(size, align, typeid(category).name(), __FILE__, __LINE__, __FUNCTION__);
-#define MM_FREE_ALIGNED(p, category) ::MM::AlignedAllocationPolicy<category>::DeallocateBytes(p);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+#	define MM_MALLOC_ALIGNED(size, align, category) ::MM::AlignedAllocationPolicy<category>::AllocateBytes(size, align, typeid(category).name(), __FILE__, __LINE__, __FUNCTION__);
+#	define MM_FREE_ALIGNED(p, category) ::MM::AlignedAllocationPolicy<category>::DeallocateBytes(p);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+
+
+
 
 // new / delete for classes deriving from AllocatedObject
 // Also hooks up the file/line/function params
 // Can only be used with classes that derive from AllocatedObject since customised new/delete needed
-#	define OGRE_NEW new (__FILE__, __LINE__, __FUNCTION__)
-#	define OGRE_DELETE delete
+#	define MM_NEW new (__FILE__, __LINE__, __FUNCTION__)
+#	define MM_DELETE delete
 
 #else
 
@@ -71,8 +84,8 @@ namespace MM
 #	define MM_DELETE_ARRAY_T_CAT(p, T, count, category) if (p) { for (size_t i = 0; i < count; ++i) { (p)[i].~T(); } ::MM::AllocationPolicy<category>::DeallocateBytes((void*)p); }
 
 // new / delete for classes deriving from AllocatedObject
-#	define OGRE_NEW new 
-#	define OGRE_DELETE delete
+#	define MM_NEW new 
+#	define MM_DELETE delete
 
 #endif // MM_DEBUG_MODE
 
