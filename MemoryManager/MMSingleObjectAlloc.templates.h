@@ -48,8 +48,6 @@ namespace MM
 			AllocationTable::UnregisterChunk(*it);
 			it->Release();	
 		}
-
-		std::cout << "SingleObjectAlloc destroyed" << std::endl;
 	}
 
 	template<typename LockPolicy>
