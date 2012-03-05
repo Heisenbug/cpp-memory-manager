@@ -39,20 +39,33 @@ namespace MM
 
 	#pragma region Constructors and destructor
 
-	inline explicit StackAllocator()
-		: mBufferSize(STACKALLOCATOR_DEFAULT_BUFFER_SIZE), mMarker(0) 
+	inline  StackAllocator()
+		: mBufferSize(0), mMarker(0) {
+		mMarkerPtr = NULL;
+		this->bufferPtr = NULL;
+	}
+	inline explicit StackAllocator(unsigned char* buf, size_t size)
+		: mBufferSize(size), mMarker(0) 
 	{
 		std::cout << "New allocator<" << typeid(T).name() << ", " << BUFFER_SIZE << ">: " << mBufferSize << " elements\n";
+		mMarkerPtr = &mMarker;
+		this->bufferPtr = buf;
 	}
 
 	inline StackAllocator(const StackAllocator& other)
-		: mBufferSize(STACKALLOCATOR_DEFAULT_BUFFER_SIZE), mMarker(0) { }
+		: mBufferSize(STACKALLOCATOR_DEFAULT_BUFFER_SIZE), mMarker(0) 
+	{ 
+		mMarkerPtr = other.mMarkerPtr;
+		this->bufferPtr = other.bufferPtr;
+	}
 
 	template<typename U>//, size_t S>
 	inline StackAllocator(const StackAllocator<U>& other) 
 		: mBufferSize(STACKALLOCATOR_DEFAULT_BUFFER_SIZE), mMarker(0) 
 	{
 		std::cout << "New (copied) allocator<" << typeid(T).name() << ", " << BUFFER_SIZE << ">: " << mBufferSize << " elements\n";
+		mMarkerPtr = other.mMarkerPtr;
+		this->bufferPtr = other.bufferPtr;
 	}
 
 	inline ~StackAllocator() { }
@@ -77,13 +90,14 @@ namespace MM
 
 	inline pointer allocate(size_type cnt, const void* = 0) 
 	{ 		
-		std::cout << "<" << typeid(T).name() << ", " << BUFFER_SIZE << "> Try to allocate " << cnt << " elements [" << mMarker << ", " << mBufferSize * sizeof(value_type) << "\n";
-		assert(mMarker + cnt * sizeof(value_type) <= mBufferSize * sizeof(value_type));
-		size_t availableIndex = mMarker;
-		mMarker += cnt * sizeof(value_type);
-		std::cout << "New mMarker: " <<mMarker << std::endl;
+		std::cout << "<" << typeid(T).name() << ", " << BUFFER_SIZE << "> Try to allocate " << cnt << " elements [" << *mMarkerPtr << ", " << mBufferSize * sizeof(value_type) << "\n";
+		assert(*mMarkerPtr + cnt * sizeof(value_type) <= mBufferSize * sizeof(value_type));
+		size_t availableIndex = *mMarkerPtr;
+		*mMarkerPtr += cnt * sizeof(value_type);
+		std::cout << "New mMarker: " <<*mMarkerPtr << std::endl;
 
-		return reinterpret_cast<pointer>(&mBuffer[availableIndex]);
+	//	return reinterpret_cast<pointer>(&mBuffer[availableIndex]);
+		return reinterpret_cast<pointer>(&bufferPtr[availableIndex]);
 	}
 
 	inline void deallocate(pointer p, size_type) 
@@ -111,7 +125,7 @@ namespace MM
 
 	inline size_type max_size() const 
 	{ 
-		return sizeof(value_type) * (mBufferSize - mMarker);
+		return sizeof(value_type) * (mBufferSize - *mMarkerPtr);
 	}
 
 	inline size_type size() const
@@ -129,6 +143,8 @@ namespace MM
 
 	#pragma endregion
 
+	size_t *mMarkerPtr;
+	unsigned char* bufferPtr;
 	private:
 
 		//const size_t	mBufferSize = sizeof(value_type) * BUFFER_SIZE;
@@ -139,6 +155,10 @@ namespace MM
 
 		// Index to the first available block of the buffer
 		size_t			mMarker;
+		
+
+		//template<typename U>
+		//friend class StackAllocator<U>;
 	};     
 }
 

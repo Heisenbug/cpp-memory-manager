@@ -126,7 +126,9 @@ void StackAllocatorTest()
 
 void RunningOut()
 {
-	std::vector<int, MM::StackAllocator<int> > vi;
+	unsigned char buf[200];
+	MM::StackAllocator<int> al (buf,200);
+	std::vector<int, MM::StackAllocator<int>> vi(al);
 
 	while (true)
 	{
@@ -160,7 +162,7 @@ void TestSTLAllocator()
 int main()
 {
 	TestSTLAllocator();
-	//RunningOut();
+	RunningOut();
 	//StackAllocatorTest();
 	// AllocationTest();
 
