@@ -89,88 +89,11 @@ void AllocationTest()
 	}
 }
 
-class Foobar
-{
-public:
-	Foobar(int v){
-		val = v;
-	}
-	int val;
-
-	inline bool operator < (const Foobar& o){
-		return (val < o.val) ;
-	}
-};
-
-void StackAllocatorTest()
-{
-	std::vector<Foobar, MM::StackAllocator<Foobar>> vec;
-
-	for (int i= 7 ; i >=0 ; --i)
-	{
-		vec.push_back(Foobar(i));
-	}
-
-	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it)
-	{
-		std::cout << (*it).val << std::endl;
-	}
-
-	std::sort(vec.begin(), vec.end());
-
-	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it)
-	{
-		std::cout << (*it).val << std::endl;
-	}
-}
-
-void RunningOut()
-{
-	unsigned char buf[200];
-	MM::StackAllocator<int> al (buf,200);
-	std::vector<int, MM::StackAllocator<int>> vi(al);
-
-	while (true)
-	{
-		vi.push_back(1);
-	}
-}
-
-void TestSTLAllocator()
-{
-	typedef std::vector<Foobar, MM::STLAllocator<Foobar, MM::MEMCATEGORY_GENERAL> > FooVector;
-	FooVector vec;
-
-	for (int i= 7 ; i >=0 ; --i)
-	{
-		vec.push_back(Foobar(i));
-	}
-
-	for(FooVector::iterator it = vec.begin(); it!= vec.end() ; ++it)
-	{
-		std::cout << (*it).val << std::endl;
-	}
-
-	std::sort(vec.begin(), vec.end());
-
-	for(FooVector::iterator it = vec.begin(); it!= vec.end() ; ++it)
-	{
-		std::cout << (*it).val << std::endl;
-	}
-}
-
 int main()
 {
 	InitMemoryManager();
 
-	void* p = MM_MALLOC(64, MM::MEMCATEGORY_GENERAL);
-
-	MM_FREE(p);
-
-	//TestSTLAllocator();
-	//RunningOut();
-	//StackAllocatorTest();
-	AllocationTest();
+	//AllocationTest();
 
 	return 0;
 }

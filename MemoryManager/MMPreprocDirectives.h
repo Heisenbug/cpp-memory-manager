@@ -19,6 +19,10 @@
 //#define MM_ENABLE_MULTITHREAD 1
 //#endif
 
+#ifndef MM_SIMD_ALIGNMENT
+#define MM_SIMD_ALIGNMENT 16
+#endif
+
 #pragma endregion
 
 #pragma region SmallObjectAllocator
