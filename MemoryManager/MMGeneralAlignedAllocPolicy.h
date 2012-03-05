@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MMGENERALALIGNEDALLOCPOLICY_H_INCLUDE_GUARD
+#define MMGENERALALIGNEDALLOCPOLICY_H_INCLUDE_GUARD
 
 #include "MMSmallObjectAllocator.h"
 #include "MMSingleObjectAllocator.h"
@@ -16,7 +17,7 @@ namespace MM
 		static inline void* AllocateBytes(size_t size, size_t align, const char* category = 0, const char* file = 0, 
 			size_t line = 0, const char* func = 0)
 		{
-			assert(align >=0);
+			assert(align >= 0);
 			
 			void *ptr;
 			void *realMemoryPtr;
@@ -28,10 +29,10 @@ namespace MM
 
 			if (realSize <= maxSmallObjectSize)
 			{
-				realMemoryPtr = SmallObjectAllocator::GetInstance().Allocate(realSize, category, file, line, func);
+				realMemoryPtr = SmallObjectAllocator::Allocate(realSize, category, file, line, func);
 			}else{
 
-				realMemoryPtr =  SingleObjectAllocator::GetInstance().Allocate(size, category, file, line, func);
+				realMemoryPtr =  SingleObjectAllocator::Allocate(size, category, file, line, func);
 			}
 			ptr = (void*) (((unsigned int)realMemoryPtr + sizeof(void*) + align -1) & ~(align-1));
 
@@ -51,3 +52,5 @@ namespace MM
 		GeneralAlignedAllocPolicy() { }
 	};
 }
+
+#endif // MMGENERALALIGNEDALLOCPOLICY_H_INCLUDE_GUARD

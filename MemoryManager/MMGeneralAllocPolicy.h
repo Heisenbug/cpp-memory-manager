@@ -23,10 +23,10 @@ namespace MM
 
 			if (size <= maxSmallObjectSize)
 			{
-				return SmallObjectAllocator::GetInstance().Allocate(size, category, file, line, func);
+				return SmallObjectAllocator::Allocate(size, category, file, line, func);
 			}
 
-			return SingleObjectAllocator::GetInstance().Allocate(size, category, file, line, func);
+			return SingleObjectAllocator::Allocate(size, category, file, line, func);
 		}
 
 		static inline void DeallocateBytes(void* p)

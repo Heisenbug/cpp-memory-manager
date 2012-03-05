@@ -15,6 +15,16 @@ namespace MM
 	{
 	public:
 
+		GenericObjectAlloc() 
+		{
+			// ...
+		}
+
+		virtual ~GenericObjectAlloc()
+		{
+			// ...
+		}
+
 		// ...
 
 		void* Allocate(size_t size) 
