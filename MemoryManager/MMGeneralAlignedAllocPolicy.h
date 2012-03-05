@@ -28,10 +28,10 @@ namespace MM
 
 			if (realSize <= maxSmallObjectSize)
 			{
-				realMemoryPtr = SmallObjectAllocator::Allocate(realSize, category, file, line, func);
+				realMemoryPtr = SmallObjectAllocator::GetInstance().Allocate(realSize, category, file, line, func);
 			}else{
 
-				realMemoryPtr =  SingleObjectAllocator::Allocate(size, category, file, line, func);
+				realMemoryPtr =  SingleObjectAllocator::GetInstance().Allocate(size, category, file, line, func);
 			}
 			ptr = (void*) (((unsigned int)realMemoryPtr + sizeof(void*) + align -1) & ~(align-1));
 
