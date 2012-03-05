@@ -41,4 +41,12 @@
 
 #pragma endregion
 
+#pragma region StackAllocator
+
+#ifndef STACKALLOCATOR_DEFAULT_BUFFER_SIZE
+#define STACKALLOCATOR_DEFAULT_BUFFER_SIZE 200
+#endif 
+
+#pragma endregion
+
 #endif // MMPREPROCDIRECTIVES_H_INCLUDE_GUARD

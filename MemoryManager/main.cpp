@@ -1,5 +1,6 @@
 #include "MemoryManager.h"
-#include "StackAllocator.h"
+#include "MMStackAllocator.h"
+#include "MMSTLAllocator.h"
 
 #include "Timer.h"
 
@@ -100,28 +101,68 @@ public:
 		return (val < o .val) ;
 	}
 };
+
 void StackAllocatorTest()
 {
 	std::vector<Foobar, MM::StackAllocator<Foobar>> vec;
 
-	for (int i= 7 ; i >=0 ; --i ){
+	for (int i= 7 ; i >=0 ; --i)
+	{
 		vec.push_back(Foobar(i));
 	}
 
-	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it){
+	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it)
+	{
 		std::cout << (*it).val << std::endl;
 	}
 
 	std::sort(vec.begin(), vec.end());
 
-	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it){
+	for(std::vector<Foobar, MM::StackAllocator<Foobar>>::iterator it = vec.begin(); it!= vec.end() ; ++it)
+	{
 		std::cout << (*it).val << std::endl;
 	}
 }
+
+void RunningOut()
+{
+	std::vector<int, MM::StackAllocator<int> > vi;
+
+	while (true)
+	{
+		vi.push_back(1);
+	}
+}
+
+void TestSTLAllocator()
+{
+	typedef std::vector<Foobar, MM::STLAllocator<Foobar, MM::MEMCATEGORY_GENERAL> > FooVector;
+	FooVector vec;
+
+	for (int i= 7 ; i >=0 ; --i)
+	{
+		vec.push_back(Foobar(i));
+	}
+
+	for(FooVector::iterator it = vec.begin(); it!= vec.end() ; ++it)
+	{
+		std::cout << (*it).val << std::endl;
+	}
+
+	std::sort(vec.begin(), vec.end());
+
+	for(FooVector::iterator it = vec.begin(); it!= vec.end() ; ++it)
+	{
+		std::cout << (*it).val << std::endl;
+	}
+}
+
 int main()
 {
-	StackAllocatorTest();
-//	AllocationTest();
+	TestSTLAllocator();
+	//RunningOut();
+	//StackAllocatorTest();
+	// AllocationTest();
 
 	return 0;
 }
