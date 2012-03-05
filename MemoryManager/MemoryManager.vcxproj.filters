@@ -126,6 +126,9 @@
     <ClInclude Include="MMSTLAllocator.h">
       <Filter>STL Allocators</Filter>
     </ClInclude>
+    <ClInclude Include="MMGeneralAlignedAllocPolicy.h">
+      <Filter>AllocPolicies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

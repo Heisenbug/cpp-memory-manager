@@ -63,6 +63,7 @@
     <ClInclude Include="MMAllocatedObject.h" />
     <ClInclude Include="MMAllocationTracker.h" />
     <ClInclude Include="MMConfig.h" />
+    <ClInclude Include="MMGeneralAlignedAllocPolicy.h" />
     <ClInclude Include="MMSTLAllocator.h" />
     <ClInclude Include="MMGeneralAllocPolicy.h" />
     <ClInclude Include="MMGenericObjectAlloc.h" />

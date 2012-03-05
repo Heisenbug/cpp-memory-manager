@@ -11,6 +11,7 @@
 #pragma region AllocPolicies includes
 
 #include "MMGeneralAllocPolicy.h"
+#include "MMGeneralAlignedAllocPolicy.h"
 
 // EXTEND IT! Add your own custom policies include files here 
 
@@ -39,8 +40,17 @@ namespace MM
 		static inline void DeallocateBytes(void* p) { }
 	};
 
-	template<> class AllocationPolicy<MEMCATEGORY_GENERAL> : public GeneralAllocPolicy { };
+	// AlignedAllocationPolicy interface
+	template <typename MemoryCategory> class AlignedAllocationPolicy 
+	{
+		static inline void* AllocateBytes(size_t size,size_t align, const char* category = 0, const char* file = 0, 
+			size_t line = 0, const char* func = 0) { }
 
+		static inline void DeallocateBytes(void* p) { }
+	};
+
+	template<> class AllocationPolicy<MEMCATEGORY_GENERAL> : public GeneralAllocPolicy { };
+	template<> class AlignedAllocationPolicy<MEMCATEGORY_GENERAL> : public GeneralAlignedAllocPolicy { };
 	// EXTEND IT! Here you can add other specializations. If you want to handle align memory request, you can use something like
 	// template <size_t align> class AllocationPolicy<MEMCATEGORY_GENERAL, align> : public GeneralAllocAlignedPolicy<align>{ };
 
