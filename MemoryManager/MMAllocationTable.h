@@ -35,18 +35,7 @@ namespace MM
 			mTable.reserve(MM_DEFAULT_ALLOCATION_TABLE_SIZE);	
 		}
 
-		~AllocTable()
-		{
-			// TODO: Destroy the AllocationTracker? Or not...this is the problem.
-
-			//while (!mTable.empty())
-			//{
-			//	// Destroy all allocator's istances
-			//	delete mTable.back().mOwner;		
-			//}
-
-			std::cout << "AllocTable destroyed" << std::endl;
-		}
+		~AllocTable() { }
 
 		void RegisterChunk(const ChunkInterface& c)
 		{
@@ -126,6 +115,14 @@ namespace MM
 		typedef SingletonHolder<AllocTable, LockPolicy> AllocationTableSingleton;
 
 	public:
+
+		static void Init()
+		{
+			LockPolicy lock;
+			
+			// Safe call to the singleton's instance, table creation
+			AllocationTableSingleton::Instance();
+		}
 
 		static void RegisterChunk(const ChunkInterface& c)
 		{
