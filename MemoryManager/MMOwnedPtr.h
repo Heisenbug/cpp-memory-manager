@@ -25,7 +25,12 @@ namespace MM
 			{
 				if (mPointee != ptr.mPointee)
 				{
-					if (mOwn) delete mPointee;
+					if (mOwn)
+					{
+						MM_DELETE_T(mOwn, T);
+						//delete mPointee;
+					}
+
 					mOwn = ptr.mOwn;
 				}
 				else if (ptr.mOwn) mOwn = true;
@@ -38,7 +43,11 @@ namespace MM
 
 		~OwnedPtr() 
 		{
-			if (mOwn) delete mPointee;
+			if (mOwn)
+			{
+				 MM_DELETE_T(mOwn, T);
+				//delete mPointee;
+			}
 		}
 
 		template<typename U> friend class OwnedPtr;
@@ -50,10 +59,16 @@ namespace MM
 		template<typename U> 
 		OwnedPtr& operator=(const OwnedPtr<U>& ptr)
 		{
-			if (this != &ptr) {
+			if (this != &ptr) 
+			{
 				if (mPointee != ptr.mPointee) 
 				{
-					if (mOwn) delete mPointee;
+					if (mOwn) 
+					{
+						MM_DELETE_T(mOwn, T);
+						//delete mPointee;
+					}
+
 					mOwn = ptr.mOwn;
 				}
 				else if (ptr.mOwn) mOwn = true;

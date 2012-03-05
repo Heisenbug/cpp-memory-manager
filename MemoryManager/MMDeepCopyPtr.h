@@ -25,7 +25,8 @@ namespace MM
 		{
 			if (this != &ptr)
 			{
-				delete mPointee;
+				MM_DELETE_T(mPointee, T);
+				//delete mPointee;
 				Copy(ptr);
 			}
 
@@ -34,7 +35,8 @@ namespace MM
 
 		~DeepCopyPtr()
 		{
-			delete ptr;
+			MM_DELETE_T(mPointee, T);
+			//delete mPointee;
 		}
 
 		reference operator*()  const 
@@ -56,7 +58,9 @@ namespace MM
 
 		void Copy(const DeepCopyPtr& ptr)
 		{
-			mPointee = ptr.mPointee ? new T(*ptr.mPointee) : 0;
+			// TODO: And if I wanted another category? Eh? How do you respond?
+			mPointee = ptr->mPointee ? MM_NEW_T(T, MM::MEMCATEGORY_GENERAL)(*ptr.mPointee);
+			//mPointee = ptr.mPointee ? new T(*ptr.mPointee) : 0;
 		}
 
 		pointee_type	mPointee;

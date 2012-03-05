@@ -14,7 +14,9 @@ namespace MM
 		typedef T&	reference;
 
 		explicit RefCountedPtr(pointer p = 0)
-			: mRCPImpl(p ? new RCPImpl(p) : 0) { }
+			// TODO: And if I wanted another category? Eh? How do you respond?
+			: mRCPImpl(p ? MM_NEW_T(RCPImpl, MM::MEMCATEGORY_GENERAL)(p) : 0) { }
+			//: mRCPImpl(p ? new RCPImpl(p) : 0) { }
 
 		RefCountedPtr(const RefCountedPtr& ptr) 
 		{
@@ -98,9 +100,12 @@ namespace MM
 		void Release()
 		{
 			if (mRCPImpl) {
-				if (--mRCPImpl->mCounter == 0) {
-					delete mRCPImpl->mPointee;
-					delete mRCPImpl;
+				if (--mRCPImpl->mCounter == 0) 
+				{
+					MM_DELETE_T(mRCPImpl->mPointee, T);
+					//delete mRCPImpl->mPointee;
+					MM_DELETE_T(mRCPImpl, RCPImpl);
+					//delete mRCPImpl;
 				}
 
 				mRCPImpl = 0;

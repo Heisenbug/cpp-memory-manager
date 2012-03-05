@@ -104,12 +104,13 @@ namespace MM
 		{ 
 			if (IsUnique()) 
 			{ 
-				delete mPointee;
+				MM_DELETE_T(mPointee, T);
+				//delete mPointee;
 			}
 			else 
 			{
 				mPrev->mNext = mNext
-					mNext->mPrev = mPrev;
+				mNext->mPrev = mPrev;
 				mPrev = mNext = 0;
 			}
 

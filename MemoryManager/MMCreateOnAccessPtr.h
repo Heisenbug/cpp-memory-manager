@@ -18,7 +18,8 @@ namespace MM
 
 		~CreateOnAccessPtr() 
 		{
-			delete mPointee;
+			MM_DELETE_T(mPointee, T);
+			//delete mPointee;
 		}
 
 		reference operator*() 
@@ -45,7 +46,9 @@ namespace MM
 		{
 			if (!mPointee) 
 			{
-				mPointee = new T;
+				// TODO: And if I wanted another category? Eh? How do you respond?
+				mPointee = MM_NEW_T(T, MM::MEMCATEGORY_GENERAL);
+				//mPointee = new T;
 			}
 		}
 

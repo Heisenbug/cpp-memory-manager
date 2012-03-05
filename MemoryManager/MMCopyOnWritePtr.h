@@ -88,7 +88,9 @@ namespace MM
 			if (!mPointee.IsUnique()) 
 			{
 				pointer old = mPointee.Get();
-				mPointee = DeepCopyPtr<T>(new T(*old));
+				// TODO: And if I wanted another category? Eh? How do you respond?
+				mPointee = DeepCopyPtr<T>(MM_NEW_T(T, MM::MEMCATEGORY_GENERAL)(*old));
+				//mPointee = DeepCopyPtr<T>(new T(*old));
 			}
 		}
 
