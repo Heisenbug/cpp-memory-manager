@@ -29,6 +29,8 @@ namespace MM
 
 			void* p = (void*)(((unsigned int)ptr + sizeof(void*) + Alignment - 1) &~ (Alignment - 1));
 
+			*((void**)((unsigned int)p - sizeof(void*))) = ptr;
+
 			return p;
 		}
 
