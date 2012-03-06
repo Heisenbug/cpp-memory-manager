@@ -11,6 +11,10 @@
 #define MM_DEBUG_MODE 1
 #endif
 
+#ifndef MM_ALLOCATION_TRACKER
+#define MM_ALLOCATION_TRACKER 1
+#endif
+
 #ifndef MM_MEM_LEAKS_FILE_NAME
 #define MM_MEM_LEAKS_FILE_NAME "MemoryManagerLeaks.log"
 #endif

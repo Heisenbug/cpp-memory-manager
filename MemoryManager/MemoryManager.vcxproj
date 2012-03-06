@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\hw4-Memory-Manager.txt" />
+    <None Include="README.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

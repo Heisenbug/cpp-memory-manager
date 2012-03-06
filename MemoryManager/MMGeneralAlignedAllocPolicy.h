@@ -21,11 +21,13 @@ namespace MM
 		typedef int IsValidAlignment
 			[Alignment <= 128 && ((Alignment & (Alignment - 1)) == 0) ? +1 : -1];
 
-		static inline void* AllocateBytes(size_t size, const char* category = 0, const char* file = 0, 
+		static inline void* AllocateAlignedBytes(size_t size, const char* category = 0, const char* file = 0, 
 			size_t line = 0, const char* func = 0)
 		{	
-			void* ptr = Alignment ? AllocateBytesAligned(Alignment, size, category, file, line, func)
-				: AllocateBytesAligned(MM_SIMD_ALIGNMENT, size, category, file, line, func);
+			size_t blockSize = Alignment ? size + Alignment - 1 + sizeof(void*) 
+				: size + MM_SIMD_ALIGNMENT - 1 + sizeof(void*);
+
+			void* ptr = AllocateBytes(size, category, file, line, func);
 
 			void* p = (void*)(((unsigned int)ptr + sizeof(void*) + Alignment - 1) &~ (Alignment - 1));
 
@@ -34,35 +36,33 @@ namespace MM
 			return p;
 		}
 
-		static inline void DeallocateBytes(void* p)
+		static inline void DeallocateAlignedBytes(void* p)
 		{
 			void* ptr = *((void**)((unsigned int)p - sizeof(void*)));
 
-			DeallocateBytesAligned(ptr);
+			DeallocateBytes(ptr);
 		}
 
 	private:
 
-		static inline void* AllocateBytesAligned(size_t align, size_t size, const char* category = 0, const char* file = 0, 
+		static inline void* AllocateBytes(size_t size, const char* category = 0, const char* file = 0, 
 			size_t line = 0, const char* func = 0)
 		{
-			size_t blockSize = size + align - 1 + sizeof(void*);
-
 			// Default behavior
 			// Check the size; if it's equal or lower than MAX_SMALL_OBJECT_SIZE, SmallObjectAllocator is called
 			size_t maxSmallObjectSize = SmallObjectAllocator::GetMaxSmallObjectSize();
 
-			if (blockSize <= maxSmallObjectSize)
+			if (size <= maxSmallObjectSize)
 			{
-				return SmallObjectAllocator::Allocate(blockSize, category, file, line, func);
+				return SmallObjectAllocator::Allocate(size, category, file, line, func);
 			}
 			
-			return SingleObjectAllocator::Allocate(blockSize, category, file, line, func);
+			return SingleObjectAllocator::Allocate(size, category, file, line, func);
 		}
 
-		static inline void DeallocateBytesAligned(void* ptr)
+		static inline void DeallocateBytes(void* p)
 		{
-			GenericDeallocation(ptr);
+			GenericDeallocation(p);
 		}
 
 		// Private constructor

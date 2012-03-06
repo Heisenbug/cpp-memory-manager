@@ -89,15 +89,18 @@ void AllocationTest()
 	}
 }
 
+void AlignedAllocationTest()
+{
+	void* p = MM_MALLOC_ALIGN(32, MM::MEMCATEGORY_GENERAL, 16);
+
+	MM_FREE_ALIGN(p, MM::MEMCATEGORY_GENERAL, 16);
+}
+
 int main()
 {
 	InitMemoryManager();
 
-	//AllocationTest();
-
-	void* p = MM_MALLOC_ALIGN(32, MM::MEMCATEGORY_GENERAL, 16);
-
-	MM_FREE_ALIGN(p, MM::MEMCATEGORY_GENERAL, 16);
+	// Insert your code here!
 
 	return 0;
 }

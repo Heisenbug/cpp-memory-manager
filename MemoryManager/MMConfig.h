@@ -42,10 +42,10 @@ namespace MM
 	// AlignedAllocationPolicy interface
 	template <typename MemoryCategory, size_t Alignment = 0> class AlignedAllocationPolicy 
 	{
-		static inline void* AllocateBytes(size_t size,size_t align, const char* category = 0, const char* file = 0, 
+		static inline void* AllocateAlignedBytes(size_t size,size_t align, const char* category = 0, const char* file = 0, 
 			size_t line = 0, const char* func = 0) { }
 
-		static inline void DeallocateBytes(void* p) { }
+		static inline void DeallocateAlignedBytes(void* p) { }
 	};
 
 	template<> class AllocationPolicy<MEMCATEGORY_GENERAL> 

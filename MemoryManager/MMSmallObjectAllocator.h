@@ -28,13 +28,17 @@ namespace MM
 		static void* Allocate(size_t size, const char* category, const char* file, size_t line, const char* func)
 		{
 			void* p = SingletonHolder<SmallObjectAllocatorType, LockPolicy>::Instance().Allocate(size);
+#if MM_ALLOCATION_TRACKER
 			AllocationTracker::GetInstance().RecordAllocation(p, size, category, file, line, func);
+#endif 
 			return p;
 		}
 
 		static void Deallocate(void * p)
 		{
+#if MM_ALLOCATION_TRACKER
 			AllocationTracker::GetInstance().RecordDellocation(p);
+#endif 
 			SingletonHolder<SmallObjectAllocatorType, LockPolicy>::Instance().Deallocate(p);
 		}
 
