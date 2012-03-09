@@ -73,9 +73,9 @@ void AllocationTest()
 			randomSize <<= exponent;
 
 			//std::cout << "Allocating (" << randomSize << ")." << std::endl;
-			v[r] = MM_MALLOC(randomSize, MM::MEMCATEGORY_GENERAL);
+			//v[r] = MM_MALLOC(randomSize, MM::MEMCATEGORY_GENERAL);
 			
-			//v[r] = MM_MALLOC(sizeof(AllocationTestStruct), MM::MEMCATEGORY_GENERAL);
+			v[r] = MM_MALLOC(sizeof(AllocationTestStruct), MM::MEMCATEGORY_GENERAL);
 		}
 	}
 

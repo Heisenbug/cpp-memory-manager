@@ -34,7 +34,7 @@ namespace MM
 	template <typename MemoryCategory> class AllocationPolicy 
 	{
 		static inline void* AllocateBytes(size_t size, const char* category = 0, const char* file = 0, 
-			size_t line = 0, const char* func = 0) { }
+			size_t line = 0, const char* func = 0)	{ return 0; }
 
 		static inline void DeallocateBytes(void* p) { }
 	};
