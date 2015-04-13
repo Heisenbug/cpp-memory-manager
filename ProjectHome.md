@@ -1,0 +1,1 @@
+A simple memory manager in C++.
